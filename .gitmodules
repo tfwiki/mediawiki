@@ -1,0 +1,33 @@
+[submodule "src/extensions/AbuseFilter"]
+	path = src/extensions/AbuseFilter
+	url = https://gerrit.wikimedia.org/r/mediawiki/extensions/AbuseFilter
+[submodule "src/extensions/CategoryTree"]
+	path = src/extensions/CategoryTree
+	url = https://gerrit.wikimedia.org/r/mediawiki/extensions/CategoryTree
+[submodule "src/extensions/CodeEditor"]
+	path = src/extensions/CodeEditor
+	url = https://gerrit.wikimedia.org/r/mediawiki/extensions/CodeEditor
+[submodule "src/extensions/Echo"]
+	path = src/extensions/Echo
+	url = https://gerrit.wikimedia.org/r/mediawiki/extensions/Echo
+[submodule "src/extensions/GeeQuBox"]
+	path = src/extensions/GeeQuBox
+	url = git@github.com:ThePortalWiki/GeeQuBox.git
+[submodule "src/extensions/NewUserMessage"]
+	path = src/extensions/NewUserMessage
+	url = https://gerrit.wikimedia.org/r/mediawiki/extensions/NewUserMessage
+[submodule "src/extensions/RedditThumbnail"]
+	path = src/extensions/RedditThumbnail
+	url = git@github.com:ThePortalWiki/RedditThumbnail.git
+[submodule "src/extensions/RevQuery"]
+	path = src/extensions/RevQuery
+	url = git@github.com:ThePortalWiki/RevQuery.git
+[submodule "src/extensions/Scribunto"]
+	path = src/extensions/Scribunto
+	url = https://gerrit.wikimedia.org/r/mediawiki/extensions/Scribunto
+[submodule "src/extensions/UserMerge"]
+	path = src/extensions/UserMerge
+	url = https://gerrit.wikimedia.org/r/mediawiki/extensions/UserMerge
+[submodule "src/extensions/EmbedVideo"]
+	path = src/extensions/EmbedVideo
+	url = git@github.com:HydraWiki/mediawiki-embedvideo.git

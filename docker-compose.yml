@@ -1,0 +1,52 @@
+version: "3"
+services:
+  database:
+    container_name: database
+    image: mysql:5.6
+    restart: always
+    environment:
+    - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    volumes:
+    - db-data:/var/lib/mysql
+
+  mediawiki:
+    container_name: mediawiki
+    image: tfwiki/mediawiki:local
+    restart: always
+    depends_on:
+    - database
+    - memcached
+    volumes:
+    - mediawiki-media:/var/www/html/w/images
+    env_file: .env
+
+  varnish:
+    container_name: varnish
+    restart: always
+    depends_on:
+    - mediawiki
+    environment:
+    - VIRTUAL_HOST=tfwiki.localhost
+    - BACKEND_HOST=mediawiki
+    image: tfwiki/varnish:local
+
+  memcached:
+    container_name: memcached
+    image: memcached
+
+  nginx-proxy:
+    container_name: nginx-proxy
+    image: jwilder/nginx-proxy:latest
+    depends_on:
+    - varnish
+    ports:
+    - 80:80
+    - 443:443
+    volumes:
+    - ./certs:/etc/nginx/certs:ro
+    - /var/run/docker.sock:/tmp/docker.sock:ro
+
+
+volumes:
+  db-data:
+  mediawiki-media:

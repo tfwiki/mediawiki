@@ -1,0 +1,14 @@
+.env
+certs/
+!certs/.gitkeep
+
+!wiki.teamfortress.com/
+wiki.teamfortress.com/w/DevSettings.php
+wiki.teamfortress.com/w/cache/
+wiki.teamfortress.com/w/images/
+wiki.teamfortress.com/w/images-ORIG/
+wiki.teamfortress.com/w/cache
+wiki.teamfortress.com/w/images
+wiki.teamfortress.com/w/images-ORIG
+
+.DS_Store

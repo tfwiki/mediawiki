@@ -1,0 +1,46 @@
+#!/bin/bash
+# Yes as it turns out I needed a bash feature ^
+
+# Damn globs
+GLOBIGNORE="*"
+
+# This is a tool to automatically update email verification
+
+queryuser() {
+QUERYRESULTS=$(mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD -e SELECT\ user_id,user_name,user_email_authenticated,user_email_token,user_registration\ FROM\ user\ WHERE\ user_name\ like\ \"$1\"\ LIMIT\ 1 --batch -N $DB_DATABASE)
+
+cutcol() {
+echo -e "$QUERYRESULTS"|cut -f$1 
+}
+
+if test -z "$QUERYRESULTS";
+then echo "No user matching $1 was found. Sorry.";
+exit
+fi
+
+pkey=$(cutcol 1)
+username=$(cutcol 2)
+authdate=$(cutcol 3)
+emailtoken=$(cutcol 4)
+regdate=$(cutcol 5)
+
+# A lil sanity checking
+if test -z "$emailtoken"; then echo "$username has no email token ready. That's weird." && exit; fi
+if test -z "$pkey"; then echo "$username has no primary key. That's really goddamn weird." && exit; fi
+
+echo "User $username ($pkey) has token and email auth date of $authdate. The token URL would be http://wiki.teamfortress.com/wiki/Special:ConfirmEmail/$emailtoken"
+
+newauthdate=$(echo $regdate + 1000|bc)
+echo "I'm updating the auth date from $authdate to $newauthdate (based on registration date $regdate) so the token will do what it should."
+
+mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD -e "UPDATE user SET user_email_authenticated=$newauthdate WHERE user_id=$pkey" --batch -N $DB_DATABASE
+
+if test "$?" -ne "0"; then echo "Welp, mysql returned nonzero. Look at the error it printed above and tell Lagg /or fix it."; fi
+}
+
+if test -z "$1";
+then echo "Give me a username. It needs to be the one from the wiki.";
+exit
+fi
+
+queryuser $1
