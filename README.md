@@ -1,3 +1,6 @@
+[![Docker Automated build](https://img.shields.io/docker/automated/tfwiki/mediawiki.svg)](https://hub.docker.com/r/tfwiki/mediawiki/)
+[![Docker Build Status](https://img.shields.io/docker/build/tfwiki/mediawiki.svg)](https://hub.docker.com/r/tfwiki/mediawiki/)
+
 Team Fortress Wiki
 ====================
 
