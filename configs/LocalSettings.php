@@ -315,18 +315,6 @@ $wgDefaultUserOptions["enotifusertalkpages"] = false;
 $wgDefaultUserOptions["enotifwatchlistpages"] = false;
 $wgDefaultUserOptions["watchdefault"] = false;
 
-/* Remove comment when they install the right deps, then push
-# Direct SMTP business
-$wgSMTP = [
-	"host" => "smtp.gmail.com",
-        "IDHost" => "gmail.com",
-	"port" => 465,
-	"auth" => true,
-	"username" => "%GMAIL_SMTP_USERNAME%",
-        "password" => "%GMAIL_SMTP_PASSWORD%"
-];
-*/
-
 #
 ## Third Party Extensions
 #
@@ -520,4 +508,40 @@ if (array_key_exists('MEMCACHED_HOST', $_ENV)) {
 
         return $server;
     }, explode(',', $_ENV['MEMCACHED_HOST']));
+}
+
+// Configure SMTP if any SMTP env variables are set
+$smtpEnvVarMap = array(
+    'SMTP_HOST' => 'host',
+    'SMTP_IDHOST' => 'IDHost',
+    'SMTP_PORT' => 'port',
+    'SMTP_AUTH' => 'auth',
+    'SMTP_USERNAME' => 'username',
+    'SMTP_PASSWORD' => 'password',
+);
+$smtpEnvVars = array_filter(array_intersect_key($_ENV, $smtpEnvVarMap));
+if (!empty($smtpEnvVars)) {
+    $wgSMTP = array();
+    foreach($smtpEnvVars as $key => $val) {
+        $properKey = $smtpEnvVarMap[$key];
+
+        // Cast certain values to expected types
+        switch ($properKey) {
+            case 'port':
+                $val = (int) $val;
+                break;
+
+            case 'auth':
+                $val = (bool) $val;
+                break;
+        }
+
+        $wgSMTP[$properKey] = $val;
+    }
+
+    $wgEnableEmail = true;
+    $wgEnableUserEmail = true;
+    $wgEmailAuthentication = true;
+    $wgEmergencyContact = $wgSMTP['user'];
+    $wgPasswordSender = $wgSMTP['user'];
 }

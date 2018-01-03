@@ -13,6 +13,7 @@ RUN a2enmod headers
 
 # MediaWiki needs these extra extensions
 RUN docker-php-ext-install sockets
+RUN pear install MAIL Net_SMTP
 
 # We want the wiki in a w/ subfolder
 RUN mv /var/www/html /var/www/i-will-be-w && \
@@ -66,12 +67,16 @@ ENV SERVER_URL='https://tfwiki.localhost'
 ENV SITENAME='Local Team Fortress Wiki'
 
 # Optional environmental variables
+ENV BLACKFIRE_SOCKET=
 ENV DB_PASSWORD=
-ENV GMAIL_SMTP_PASSWORD=
-ENV GMAIL_SMTP_USERNAME=
 ENV MEMCACHED_HOST=
+ENV SMTP_AUTH=
+ENV SMTP_HOST=
+ENV SMTP_IDHOST=
+ENV SMTP_PASSWORD=
+ENV SMTP_PORT=
+ENV SMTP_USERNAME=
 ENV STEAM_API_KEY=
 ENV VARNISH_HOST=
-ENV BLACKFIRE_SOCKET=
 
 CMD /usr/local/bin/configure-blackfire && /usr/local/bin/configure-mediawiki && apache2-foreground

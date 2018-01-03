@@ -30,7 +30,7 @@ Once we have the entire site running via Docker, we'll then upgrading MediaWiki.
 
 ### TF Wiki
 
-`Dockerfile` is responsible for the actual build of the TF2 Wiki. This Dockerfile moves MediaWiki's files to match the production TF Wiki's directory structure, and then we're adding our extensions, and necessary supporting files to configure the Docker container at runtime.
+`Dockerfile` is responsible for the actual build of the TF Wiki. This Dockerfile moves MediaWiki's files to match the production TF Wiki's directory structure, and then we're adding our extensions, and necessary supporting files to configure the Docker container at runtime.
 
 We can configure this `tfwiki/mediawiki` container with the following environmental variables:
 
@@ -42,11 +42,15 @@ Variable              | Default              | Associated MediaWiki variable | N
 `DB_PASSWORD`         | –                    | `$wgDBpassword`               |
 `DB_TYPE`             | `mysql`              | `$wgDBtype`                   |
 `DB_USER`             | `wiki`               | `$wgDBuser`                   |
-`GMAIL_SMTP_PASSWORD` | –                    | `$wgSMTP['password']`         |
-`GMAIL_SMTP_USERNAME` | –                    | `$wgSMTP['username']`         |
-`MEMCACHED_HOST`      |                     | `$wgMemCachedServers`         | If this is blank we'll use MediaWiki's default cache settings
+`SMTP_HOST`           | -                    | `$wgSMTP['Host']`             |
+`SMTP_IDHOST`         | -                    | `$wgSMTP['IDHost']`           |
+`SMTP_PORT`           | -                    | `$wgSMTP['port']`             |
+`SMTP_AUTH`           | -                    | `$wgSMTP['auth']`             |
+`SMTP_USERNAME`       | -                    | `$wgSMTP['username']`         |
+`SMTP_PASSWORD`       | -                    | `$wgSMTP['password']`         |
+`MEMCACHED_HOST`      |                      | `$wgMemCachedServers`         | Can declare CSV. If this is blank we'll use MediaWiki's default cache settings
 `SECRET_KEY`          | *Required*           | `$wgSecretKey`                |
 `SERVER_URL`          | *Required*           | `$wgServer`                   |
 `SITENAME`            | `Team Fortress Wiki` | `$wgSitename`                 |
 `STEAM_API_KEY`       |                      | N/A                           |
-`VARNISH_HOST`        | `varnish`            | `$wgSquidServers`             | If this is blank and Varnish is used, MediaWiki won't be able to automatically purge items from the cache
+`VARNISH_HOST`        | `varnish`            | `$wgSquidServers`             | Can declare CSV. If this is blank and Varnish is used, MediaWiki won't purge items from the cache
