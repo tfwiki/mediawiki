@@ -44,8 +44,8 @@ $wgDisableOutputCompression = true;
 $wgDisableCounters = true;
 $wgHitcounterUpdateFreq = 1000;
 
-$wgSitename         = "%SITENAME%";
-$wgServer           = "%SERVER_URL%";
+$wgSitename         = getenv("SITENAME");
+$wgServer           = getenv("SERVER_URL");
 
 ## The URL base path to the directory containing the wiki;
 ## defaults for all runtime URL paths are based off of this.
@@ -67,11 +67,11 @@ $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = false;
 
 ## Database settings
-$wgDBtype           = "%DB_TYPE%";
-$wgDBserver         = "%DB_HOST%";
-$wgDBname           = "%DB_DATABASE%";
-$wgDBuser           = "%DB_USER%";
-$wgDBpassword       = "%DB_PASSWORD%";
+$wgDBtype     = getenv("DB_TYPE");
+$wgDBserver   = getenv("DB_HOST");
+$wgDBname     = getenv("DB_DATABASE");
+$wgDBuser     = getenv("DB_USER");
+$wgDBpassword = getenv("DB_PASSWORD");
 
 # MySQL specific settings
 $wgDBprefix         = "";
@@ -155,7 +155,7 @@ $wgLocalInterwiki   = strtolower( $wgSitename );
 
 $wgLanguageCode = "en";
 
-$wgSecretKey = "%SECRET_KEY%";
+$wgSecretKey = getenv("SECRET_KEY");
 
 ## Disable non-valve skins
 ## To remove various skins from the User Preferences choices
@@ -388,7 +388,7 @@ $wgGroupPermissions['autoconfirmed']['skipcaptcha'] = true;  // Disable Captcha 
 
 ## FancyCaptcha settings
 $wgCaptchaDirectory = "$wgUploadDirectory/alpha";  // directory to store captcha images
-$wgCaptchaSecret = "%CAPTCHA_SECRET%";
+$wgCaptchaSecret = getenv("CAPTCHA_SECRET");
 
 # Uploading local data
 #require_once 'extensions/SpecialUploadLocal/SpecialUploadLocal.php';
@@ -501,3 +501,23 @@ $wgGroupPermissions['sysop']['abusefilter-log'] = true;
 $wgGroupPermissions['sysop']['abusefilter-private'] = true;
 $wgGroupPermissions['sysop']['abusefilter-modify-restricted'] = true;
 $wgGroupPermissions['sysop']['abusefilter-revert'] = true;
+
+// VARNISH_HOST can be a CSV of hostnames
+if (array_key_exists('VARNISH_HOST', $_ENV)) {
+    $wgUseSquid = true;
+    $wgUsePrivateIPs = true;
+    $wgSquidServers = explode(',', $_ENV['VARNISH_HOST']);
+}
+
+// MEMCACHED_HOST can be a CSV of hostnames
+if (array_key_exists('MEMCACHED_HOST', $_ENV)) {
+    // Add default ports, if not provided
+    $wgMainCacheType = CACHE_MEMCACHED;
+    $wgMemCachedServers = array_map(function($server) {
+        if (strpos($server, ':') === false) {
+            $server .= ':11211';
+        }
+
+        return $server;
+    }, explode(',', $_ENV['MEMCACHED_HOST']));
+}
