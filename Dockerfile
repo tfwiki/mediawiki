@@ -45,6 +45,7 @@ COPY src/extensions/Scribunto /var/www/html/w/extensions/Scribunto
 COPY src/extensions/UserMerge /var/www/html/w/extensions/UserMerge
 
 # Config templates
+COPY configs/php.ini /usr/local/etc/php/php.ini
 COPY configs/apache.conf /etc/apache2/sites-available/000-default.conf
 COPY configs/LocalSettings.php /var/www/html/w/LocalSettings.php
 COPY configs/itemredirect.php  /var/www/html/scripts/itemredirect.php
