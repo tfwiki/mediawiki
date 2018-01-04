@@ -542,6 +542,12 @@ if (!empty($smtpEnvVars)) {
     $wgEnableEmail = true;
     $wgEnableUserEmail = true;
     $wgEmailAuthentication = true;
-    $wgEmergencyContact = $wgSMTP['user'];
-    $wgPasswordSender = $wgSMTP['user'];
+}
+
+if (array_key_exists('EMAIL_EMERGENCY_CONTACT', $_ENV)) {
+    $wgEmergencyContact = $_ENV['EMAIL_EMERGENCY_CONTACT'];
+}
+
+if (array_key_exists('EMAIL_PASSWORD_SENDER', $_ENV)) {
+    $wgPasswordSender = $_ENV['EMAIL_PASSWORD_SENDER'];
 }

@@ -34,23 +34,25 @@ Once we have the entire site running via Docker, we'll then upgrading MediaWiki.
 
 We can configure this `tfwiki/mediawiki` container with the following environmental variables:
 
-Variable              | Default              | Associated MediaWiki variable | Notes
---------------------- | -------------------- | ----------------------------- | -----
-`CAPTCHA_SECRET`      | *Required*           | `$wgCaptchaSecret`            | 
-`DB_DB`               | `wiki`               | `$wgDBname`                   |
-`DB_HOST`             | `db`                 | `$wgDBserver`                 |
-`DB_PASSWORD`         | –                    | `$wgDBpassword`               |
-`DB_TYPE`             | `mysql`              | `$wgDBtype`                   |
-`DB_USER`             | `wiki`               | `$wgDBuser`                   |
-`SMTP_HOST`           | -                    | `$wgSMTP['Host']`             |
-`SMTP_IDHOST`         | -                    | `$wgSMTP['IDHost']`           |
-`SMTP_PORT`           | -                    | `$wgSMTP['port']`             |
-`SMTP_AUTH`           | -                    | `$wgSMTP['auth']`             |
-`SMTP_USERNAME`       | -                    | `$wgSMTP['username']`         |
-`SMTP_PASSWORD`       | -                    | `$wgSMTP['password']`         |
-`MEMCACHED_HOST`      |                      | `$wgMemCachedServers`         | Can declare CSV. If this is blank we'll use MediaWiki's default cache settings
-`SECRET_KEY`          | *Required*           | `$wgSecretKey`                |
-`SERVER_URL`          | *Required*           | `$wgServer`                   |
-`SITENAME`            | `Team Fortress Wiki` | `$wgSitename`                 |
-`STEAM_API_KEY`       |                      | N/A                           |
-`VARNISH_HOST`        | `varnish`            | `$wgSquidServers`             | Can declare CSV. If this is blank and Varnish is used, MediaWiki won't purge items from the cache
+Variable                  | Default                 | Associated MediaWiki variable | Notes
+------------------------- | ----------------------- | ----------------------------- | -----
+`CAPTCHA_SECRET`          | *Required*              | `$wgCaptchaSecret`            | 
+`DB_DB`                   | `wiki`                  | `$wgDBname`                   |
+`DB_HOST`                 | `db`                    | `$wgDBserver`                 |
+`DB_PASSWORD`             | –                       | `$wgDBpassword`               |
+`DB_TYPE`                 | `mysql`                 | `$wgDBtype`                   |
+`DB_USER`                 | `wiki`                  | `$wgDBuser`                   |
+`EMAIL_EMERGENCY_CONTACT` | *Required with SMTP_\** | `$wgEmergencyContact`         | 
+`EMAIL_PASSWORD_SENDER `  | *Required with SMTP_\** | `$wgPasswordSender`           | 
+`SMTP_HOST`               | -                       | `$wgSMTP['Host']`             |
+`SMTP_IDHOST`             | -                       | `$wgSMTP['IDHost']`           |
+`SMTP_PORT`               | -                       | `$wgSMTP['port']`             |
+`SMTP_AUTH`               | -                       | `$wgSMTP['auth']`             |
+`SMTP_USERNAME`           | -                       | `$wgSMTP['username']`         |
+`SMTP_PASSWORD`           | -                       | `$wgSMTP['password']`         |
+`MEMCACHED_HOST`          |                         | `$wgMemCachedServers`         | Can declare CSV. If this is blank we'll use MediaWiki's default cache settings
+`SECRET_KEY`              | *Required*              | `$wgSecretKey`                |
+`SERVER_URL`              | *Required*              | `$wgServer`                   |
+`SITENAME`                | `Team Fortress Wiki`    | `$wgSitename`                 |
+`STEAM_API_KEY`           |                         | N/A                           |
+`VARNISH_HOST`            | `varnish`               | `$wgSquidServers`             | Can declare CSV. If this is blank and Varnish is used, MediaWiki won't purge items from the cache
