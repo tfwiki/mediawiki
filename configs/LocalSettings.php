@@ -541,6 +541,7 @@ if (!empty($smtpEnvVars)) {
 
     $wgEnableEmail = true;
     $wgEnableUserEmail = true;
+    $wgUserEmailUseReplyTo = true; // Always send "from" wiki
     $wgEmailAuthentication = true;
 }
 
