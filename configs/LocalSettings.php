@@ -498,7 +498,18 @@ if (array_key_exists('VARNISH_HOST', $_ENV)) {
     // Resolve to IPs, in case some/all of these hosts are round-robin DNS:
     // We must be able to PURGE all varnish hosts
     $varnishHosts = explode(',', $_ENV['VARNISH_HOST']);
-    $varnishIps = array_filter(array_map(gethostbynamel, $varnishHosts));
+    $varnishIps = array_filter(array_map(function($host) {
+        if (strpos($host, ':') === false) {
+            return gethostbynamel($host);
+        }
+
+        // Preserve given port
+        list($host, $port) = explode(':', $host);
+        $ips = gethostbynamel($host);
+        return array_map(function($ip) use ($port) {
+            return sprintf("%s:%s", $ip, $port);
+        }, $ips);
+    }, $varnishHosts));
 
     // Flatten 2d array
     $wgSquidServers = call_user_func_array(array_merge, $varnishIps);
@@ -511,19 +522,20 @@ if (array_key_exists('MEMCACHED_HOST', $_ENV)) {
     // Resolve to IPs, in case some/all of these hosts are round-robin DNS:
     // We must be able to PURGE all memcache hosts
     $memcacheHosts = explode(',', $_ENV['MEMCACHED_HOST']);
-    $memcacheIps = array_filter(array_map(gethostbynamel, $memcacheHosts));
-
-    // Flatten 2d array
-    $memcacheIps = call_user_func_array(array_merge, $memcacheIps);
-    
-    // Add ports
-    $wgMemCachedServers = array_map(function($server) {
-        if (strpos($server, ':') === false) {
-            $server .= ':11211';
+    $memcacheIps = array_filter(array_map(function($host) {
+        if (strpos($host, ':') === false) {
+            $host .= ':11211';
         }
 
-        return $server;
-    }, $memcacheIps);
+        // Preserve given port
+        list($host, $port) = explode(':', $host);
+        $ips = gethostbynamel($host);
+        return array_map(function($ip) use ($port) {
+            return sprintf("%s:%s", $ip, $port);
+        }, $ips);
+    }, $memcacheHosts));
+    // Flatten 2d array
+    $wgMemCachedServers = call_user_func_array(array_merge, $memcacheIps);
 }
 
 // Configure SMTP if any SMTP env variables are set
