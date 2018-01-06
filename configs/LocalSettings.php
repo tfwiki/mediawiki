@@ -494,20 +494,36 @@ $wgGroupPermissions['sysop']['abusefilter-revert'] = true;
 if (array_key_exists('VARNISH_HOST', $_ENV)) {
     $wgUseSquid = true;
     $wgUsePrivateIPs = true;
-    $wgSquidServers = explode(',', $_ENV['VARNISH_HOST']);
+    
+    // Resolve to IPs, in case some/all of these hosts are round-robin DNS:
+    // We must be able to PURGE all varnish hosts
+    $varnishHosts = explode(',', $_ENV['VARNISH_HOST']);
+    $varnishIps = array_filter(array_map(gethostbynamel, $varnishHosts));
+
+    // Flatten 2d array
+    $wgSquidServers = call_user_func_array(array_merge, $varnishIps);
 }
 
 // MEMCACHED_HOST can be a CSV of hostnames
 if (array_key_exists('MEMCACHED_HOST', $_ENV)) {
-    // Add default ports, if not provided
     $wgMainCacheType = CACHE_MEMCACHED;
+    
+    // Resolve to IPs, in case some/all of these hosts are round-robin DNS:
+    // We must be able to PURGE all memcache hosts
+    $memcacheHosts = explode(',', $_ENV['MEMCACHED_HOST']);
+    $memcacheIps = array_filter(array_map(gethostbynamel, $memcacheHosts));
+
+    // Flatten 2d array
+    $memcacheIps = call_user_func_array(array_merge, $memcacheIps);
+    
+    // Add ports
     $wgMemCachedServers = array_map(function($server) {
         if (strpos($server, ':') === false) {
             $server .= ':11211';
         }
 
         return $server;
-    }, explode(',', $_ENV['MEMCACHED_HOST']));
+    }, $memcacheIps);
 }
 
 // Configure SMTP if any SMTP env variables are set
