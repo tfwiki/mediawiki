@@ -505,14 +505,17 @@ if (array_key_exists('VARNISH_HOST', $_ENV)) {
 
         // Preserve given port
         list($host, $port) = explode(':', $host);
-        $ips = gethostbynamel($host);
+        $ips = gethostbynamel($host) ?: [];
+
         return array_map(function($ip) use ($port) {
             return sprintf("%s:%s", $ip, $port);
         }, $ips);
     }, $varnishHosts));
 
     // Flatten 2d array
-    $wgSquidServers = call_user_func_array(array_merge, $varnishIps);
+    if (!empty($varnishIps)) {
+        $wgSquidServers = call_user_func_array(array_merge, $varnishIps);
+    }
 }
 
 // MEMCACHED_HOST can be a CSV of hostnames
@@ -529,13 +532,17 @@ if (array_key_exists('MEMCACHED_HOST', $_ENV)) {
 
         // Preserve given port
         list($host, $port) = explode(':', $host);
-        $ips = gethostbynamel($host);
+        $ips = gethostbynamel($host) ?: [];
+
         return array_map(function($ip) use ($port) {
             return sprintf("%s:%s", $ip, $port);
         }, $ips);
     }, $memcacheHosts));
+
     // Flatten 2d array
-    $wgMemCachedServers = call_user_func_array(array_merge, $memcacheIps);
+    if (!empty($memcacheIps)) {
+        $wgMemCachedServers = call_user_func_array(array_merge, $memcacheIps);
+    }
 }
 
 // Configure SMTP if any SMTP env variables are set
