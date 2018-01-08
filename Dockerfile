@@ -4,6 +4,9 @@ FROM tfwiki/mediawiki:base-1.26.2
 RUN apt-get update && apt-get install -y \
         vim \
         less \
+        zip \
+        unzip \
+        php-pclzip \
     --no-install-recommends && \
     rm -r /var/lib/apt/lists/*
 
@@ -14,12 +17,20 @@ RUN a2enmod headers
 # MediaWiki needs these extra extensions
 RUN docker-php-ext-install sockets
 RUN pear install MAIL Net_SMTP
+RUN curl -sS https://getcomposer.org/installer | \
+    php -- --install-dir=/usr/bin/ --filename=composer
 
 # We want the wiki in a w/ subfolder
 RUN mv /var/www/html /var/www/i-will-be-w && \
     mkdir -p /var/www/html && \
     mv /var/www/i-will-be-w /var/www/html/w
-    
+
+# Install composer dependencies
+COPY composer.json /var/www/html/w/composer.json
+COPY composer.lock /var/www/html/w/composer.lock
+RUN composer install --working-dir=/var/www/html/w/ --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader
+COPY src/index.php /var/www/html/w/index.php
+
 # Assets
 COPY src/fonts /var/www/html/fonts
 COPY src/favicon.ico /var/www/html/
@@ -73,6 +84,7 @@ ENV DB_PASSWORD=
 ENV EMAIL_EMERGENCY_CONTACT=
 ENV EMAIL_PASSWORD_SENDER=
 ENV MEMCACHED_HOST=
+ENV SENTRY_URL=
 ENV SMTP_AUTH=
 ENV SMTP_HOST=
 ENV SMTP_IDHOST=

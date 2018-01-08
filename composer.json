@@ -1,0 +1,14 @@
+{
+    "name": "tfwiki/mediawiki",
+    "type": "project",
+    "require": {
+        "sentry/sentry": "^1.8",
+        "mediawiki/core": "1.26.2"
+    },
+    "authors": [
+        {
+            "name": "Rob Jackson",
+            "email": "rjackson@wiki.tf"
+        }
+    ]
+}
