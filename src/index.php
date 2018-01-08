@@ -3,7 +3,9 @@
 // Setup Sentry error handling
 if ($sentryUrl = getenv('SENTRY_DSN')) {
     require_once "/var/www/html/w/vendor/autoload.php";
-    $client = new Raven_Client($sentryUrl);
+    $client = new Raven_Client($sentryUrl, [
+        'name' => getenv('sitename')
+    ]);
     $client->install();
 }
 
