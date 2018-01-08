@@ -44,7 +44,7 @@ Variable                  | Default                 | Associated MediaWiki varia
 `DB_USER`                 | `wiki`                  | `$wgDBuser`                   |
 `EMAIL_EMERGENCY_CONTACT` | *Required with SMTP_\** | `$wgEmergencyContact`         | 
 `EMAIL_PASSWORD_SENDER `  | *Required with SMTP_\** | `$wgPasswordSender`           | 
-`SENTRY_URL`              | -                       |                               | Used to report errors to [Sentry](https://sentry.io)
+`SENTRY_DSN`              | -                       |                               | Used to report errors to [Sentry](https://sentry.io)
 `SMTP_HOST`               | -                       | `$wgSMTP['Host']`             |
 `SMTP_IDHOST`             | -                       | `$wgSMTP['IDHost']`           |
 `SMTP_PORT`               | -                       | `$wgSMTP['port']`             |

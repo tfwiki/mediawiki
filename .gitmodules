@@ -31,3 +31,6 @@
 [submodule "src/extensions/EmbedVideo"]
 	path = src/extensions/EmbedVideo
 	url = https://github.com/HydraWiki/mediawiki-embedvideo.git
+[submodule "src/extensions/Sentry"]
+	path = src/extensions/Sentry
+	url = https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Sentry.git

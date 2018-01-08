@@ -53,6 +53,7 @@ COPY src/extensions/NewUserMessage /var/www/html/w/extensions/NewUserMessage
 COPY src/extensions/RedditThumbnail /var/www/html/w/extensions/RedditThumbnail
 COPY src/extensions/RevQuery /var/www/html/w/extensions/RevQuery
 COPY src/extensions/Scribunto /var/www/html/w/extensions/Scribunto
+COPY src/extensions/Sentry /var/www/html/w/extensions/Sentry
 COPY src/extensions/UserMerge /var/www/html/w/extensions/UserMerge
 
 # Config templates
@@ -84,7 +85,7 @@ ENV DB_PASSWORD=
 ENV EMAIL_EMERGENCY_CONTACT=
 ENV EMAIL_PASSWORD_SENDER=
 ENV MEMCACHED_HOST=
-ENV SENTRY_URL=
+ENV SENTRY_DSN=
 ENV SMTP_AUTH=
 ENV SMTP_HOST=
 ENV SMTP_IDHOST=
