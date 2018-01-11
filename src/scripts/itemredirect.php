@@ -189,15 +189,18 @@ function redirect_to_page($page, $lang=null)
 	redirect(build_url($page));
 }
 if(!isset($_GET['id'])) {
+	http_response_code(400);
 	error('Missing ID parameter');
 }
 $language = isset($_GET['lang']) ? language_map($_GET['lang']) : null;
 if(!intval($_GET['id'])) {
+	http_response_code(400);
 	error('Malformed ID');
 }
 $cached_data = load_data();
 $items = $cached_data['items'];
 if(!isset($items[$_GET['id']])) {
+	http_response_code(404);
 	header("Cache-Control: no-cache, must-revalidate");
 	header("Expires: Sun, 25 Mar 2012 13:00:00 GMT"); // Date in the past
 	error('Invalid item ID: '.$_GET['id']);
