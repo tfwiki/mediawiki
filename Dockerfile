@@ -7,6 +7,8 @@ RUN apt-get update && apt-get install -y \
         zip \
         unzip \
         php-pclzip \
+        libmemcached-dev \
+        libz-dev \
     --no-install-recommends && \
     rm -r /var/lib/apt/lists/*
 
@@ -17,6 +19,8 @@ RUN a2enmod headers
 # MediaWiki needs these extra extensions
 RUN docker-php-ext-install sockets
 RUN pear install MAIL Net_SMTP
+RUN pecl install memcached-2.2.0 && \
+    docker-php-ext-enable memcached
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/bin/ --filename=composer
 
@@ -37,6 +41,9 @@ COPY src/favicon.ico /var/www/html/
 
 # Shell utils
 COPY src/shell /var/www/html/shell
+
+# Scripts
+COPY src/scripts  /var/www/html/scripts
 
 # Valve skin
 # TODO: Check how much of this is actually used, and clean up
@@ -60,7 +67,6 @@ COPY src/extensions/UserMerge /var/www/html/w/extensions/UserMerge
 COPY configs/php.ini /usr/local/etc/php/php.ini
 COPY configs/apache.conf /etc/apache2/sites-available/000-default.conf
 COPY configs/LocalSettings.php /var/www/html/w/LocalSettings.php
-COPY configs/itemredirect.php  /var/www/html/scripts/itemredirect.php
 
 # Generate config at runtime
 COPY scripts/configure-mediawiki.sh /usr/local/bin/configure-mediawiki

@@ -34,9 +34,3 @@ if [ "$missing_vars" = true ] ; then
     echo "Required variables are not set. See above for details."
     exit 1
 fi
-
-echo "Configuring itemredirect.php"
-sed -i \
-    -e "s;%STEAM_API_KEY%;$STEAM_API_KEY;g" \
-    -e "s;%MEMCACHED_HOST%;$MEMCACHED_HOST;g" \
-    /var/www/html/scripts/itemredirect.php

@@ -1,25 +1,21 @@
 <?php
+
 // TF2 item redirect by WindPower
-// This is somewhat inefficient because it uses a flat file for caching.
-// Will add proper caching if I get details about what to use (memcache/APC/etc)
+
 $config = array(
-	'api_key' => '%STEAM_API_KEY%', // API key to use (associated with account 'afarnsworth')
-	//'cache_file' => './cache.json', // Path to cache file
-	'cache_duration' => 900, // Time (in seconds) during which the cache is considered fresh. Set to 0 to disable.
-	'wiki_default' => 'http://wiki.teamfortress.com/wiki/%ARTICLE%', // Format of URL to articles in the default language
-	'wiki_lang' => 'http://wiki.teamfortress.com/wiki/%ARTICLE%', // Format of URL to articles in another language (in case per-language subdomains get added)
-	'article_format' => '%ARTICLE%/%LANGUAGE%', // Format of article name in another language
-	'default_language' => 'en', // Default language of articles
-	'wiki_api' => 'http://wiki.teamfortress.com/w/api.php', // URL to MediaWiki API
-	// Note that the Wiki API results are not cached, so if this script is used internally, it would be better to use an IP on the
-	// local network corresponding to the wiki server (or localhost if this script runs on the same server as the wiki)
-	// instead of using wiki.teamfortress.com. That, or modify /etc/hosts to get the same effect.
-	'memcached_host' => '%MEMCACHED_HOST%',
-	'memcached_port' => '11211',
-	'http_proxy_addr' => 'proxy',
-	'http_proxy_port' => '8000'
+	'api_key' => getenv('STEAM_API_KEY'),
+	'cache_duration' => 900,
+	'wiki_default' => getenv('SERVER_URL') . '/wiki/%ARTICLE%', // Default article URL format
+	'wiki_lang' => getenv('SERVER_URL') . '/wiki/%ARTICLE%',    // Localised article URL format
+	'article_format' => '%ARTICLE%/%LANGUAGE%', 				// Format of article name in another language
+	'default_language' => 'en', 							    // Default language of articles
+	'wiki_api' => 'http://localhost/w/api.php', 				// URL to MediaWiki API
+	'memcached_host' => getenv('MEMCACHED_HOST'),
+	'memcached_port' => '11211'
 );
+
 define( 'NAMEMAP_CACHE_KEY', 'wikiredirect_namemap2' );
+
 $item_filters = array(      // Filters applied to item names, in the form '/regex/' => 'replacement'
 	'/^The\\s+/i' => '',    // Remove "the"
 	'/[#<>[\]|{}]+/' => '', // Strip characters not allowed in Wiki page titles
@@ -135,8 +131,8 @@ function get_memcache()
 	if ( !isset( $memcache ) )
 	{
 		global $config;
-		$memcache = new Memcache;
-		$memcache->pconnect( $config['memcached_host'], $config['memcached_port'] );
+		$memcache = new Memcached;
+		$memcache->addServer( $config['memcached_host'], $config['memcached_port'] );
 	}
 	return $memcache;
 }
@@ -163,8 +159,7 @@ function load_data()
 		return $cache;
 	}
 	// Otherwise, gotta refresh the cache
-	//$json = @json_decode(@file_get_contents('http://api.steampowered.com/IEconItems_440/GetSchema/v0001/?key=' . rawurlencode($config['api_key']) . '&language=english&format=json'), true);
-	$data = curl_fetch( 'http://api.steampowered.com/IEconItems_440/GetSchema/v0001/?key='.rawurlencode($config['api_key']).'&language=english&format=json' );
+	$data = curl_fetch( 'https://api.steampowered.com/IEconItems_440/GetSchema/v0001/?key='.rawurlencode($config['api_key']).'&language=english&format=json' );
 	$json = @json_decode( $data, true );
 	if(!$json) {
 		error('Received invalid data from Steam API');
