@@ -33,7 +33,6 @@ RUN mv /var/www/html /var/www/i-will-be-w && \
 COPY composer.json /var/www/html/w/composer.json
 COPY composer.lock /var/www/html/w/composer.lock
 RUN composer install --working-dir=/var/www/html/w/ --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader
-COPY src/index.php /var/www/html/w/index.php
 
 # Assets
 COPY src/fonts /var/www/html/fonts

@@ -19,6 +19,15 @@ if( defined( 'MW_INSTALL_PATH' ) ) {
 	$IP = dirname( __FILE__ );
 }
 
+// Setup Sentry error handling
+require_once $IP . "/vendor/autoload.php";
+if ($sentryUrl = getenv('SENTRY_DSN')) {
+    $client = new Raven_Client($sentryUrl, [
+        'name' => getenv('sitename')
+    ]);
+    $client->install();
+}
+
 $path = array( $IP, "$IP/includes", "$IP/languages" );
 set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_include_path() );
 
