@@ -104,8 +104,9 @@ $wgDBmysql5 = true;
 # Its recommended we keep this in DB on a large wiki (tens of thousands of pages; we have hundreds of thousands!)
 $wgParserCacheType = CACHE_DB; # optional
 
-# This actually uses the cache type set in $wgMainCacheType; so not guaranteed to be memcache
-$wgSessionsInMemcached = true; # optional
+# Manage sessions via the DB (memcache isn't reliable with multiple memcache servers)
+$wgSessionsInObjectCache = true;
+$wgSessionCacheType = CACHE_DB;
 
 # Use local file cache of page output, this may not be 100% correct for some pages with variables
 # See: http://www.mediawiki.org/wiki/Manual:File_cache, this is a stop gap to stop it kiling the forums
