@@ -143,16 +143,6 @@ $wgLocalisationCacheConf = array(
         'manualRecache' => false,
 );
 
-/**
- * We're spending a lot of CPU time (almost 50%, according to random profiles)
- * re-generating our MediaWiki sidebar, the bulk of that time being spent parsing Lua.
- * 
- * Caching the sidebar should result in a significant performance boost.
- * 
- * @see https://www.mediawiki.org/wiki/Manual:$wgEnableSidebarCache
- */
-$wgEnableSidebarCache = true;
-
 #Flags to decrease database locking
 $wgAntiLockFlags = ALF_NO_LINK_LOCK | ALF_NO_BLOCK_LOCK;
 
