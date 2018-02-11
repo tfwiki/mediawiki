@@ -3,7 +3,7 @@
     "type": "project",
     "require": {
         "sentry/sentry": "^1.8",
-        "mediawiki/core": "1.26.2"
+        "mediawiki/core": "1.27.4"
     },
     "authors": [
         {

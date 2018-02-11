@@ -61,7 +61,6 @@ $wgServer           = getenv("SERVER_URL");
 ## For more information on customizing the URLs please see:
 ## http://www.mediawiki.org/wiki/Manual:Short_URL
 $wgScriptPath       = "/w";
-$wgScriptExtension  = ".php";
 
 ## UPO means: this is also a user preference option
 
@@ -104,8 +103,7 @@ $wgDBmysql5 = true;
 # Its recommended we keep this in DB on a large wiki (tens of thousands of pages; we have hundreds of thousands!)
 $wgParserCacheType = CACHE_DB; # optional
 
-# Manage sessions via the DB (memcache isn't reliable with multiple memcache servers)
-$wgSessionsInObjectCache = true;
+# Memcache isn't reliable with multiple memcache servers
 $wgSessionCacheType = CACHE_DB;
 
 # Use local file cache of page output, this may not be 100% correct for some pages with variables

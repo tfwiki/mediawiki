@@ -1,4 +1,4 @@
-FROM tfwiki/mediawiki:base-1.26.2
+FROM mediawiki:1.27.4
 
 # Luxuries
 RUN apt-get update && apt-get install -y \
@@ -6,7 +6,6 @@ RUN apt-get update && apt-get install -y \
         less \
         zip \
         unzip \
-        php-pclzip \
         libmemcached-dev \
         libz-dev \
     --no-install-recommends && \
@@ -19,7 +18,7 @@ RUN a2enmod headers
 # MediaWiki needs these extra extensions
 RUN docker-php-ext-install sockets
 RUN pear install MAIL Net_SMTP
-RUN pecl install memcached-2.2.0 && \
+RUN pecl install memcached && \
     docker-php-ext-enable memcached
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/bin/ --filename=composer
