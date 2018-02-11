@@ -397,8 +397,7 @@ $wgSentryDsn = getenv('SENTRY_DSN');
 ### Causing errors with 1.20.5 upgrade; removing for now. - RJ
 
 # UserMerge extension
-#  upgraded to 1.7.0, RJackson 05/15/13
-require_once( "$IP/extensions/UserMerge/UserMerge.php" );
+wfLoadExtension( 'UserMerge' );
 $wgGroupPermissions['bureaucrat']['usermerge'] = true;
 
 # Cite extension
@@ -458,9 +457,6 @@ $wgGroupPermissions['sysop']['renameuser'] = true;
 # GeeQuBox extension -- Moussekateer 06/22/13
 require_once("$IP/extensions/GeeQuBox/GeeQuBox.php");
 
-# seb26's RevQuery extension for attaching timestamps to file urls -- Moussekateer 06/16/13
-require_once("$IP/extensions/RevQuery/RevQuery.php");
-
 # Moussekateer's RedditThumbnail extension for setting thumbnail images for links on reddit
 require_once("$IP/extensions/RedditThumbnail/RedditThumbnail.php");
 $wgRedditThumbnailImage = 'http://wiki.teamfortress.com/w/images/3/3f/Reddit_thumbnail.png';
@@ -480,13 +476,13 @@ $wgScribuntoUseGeSHi = false;  # Turned off now that SyntaxHighlight_GeSHi was u
 # require_once("$IP/extensions/SyntaxHighlight_GeSHi/SyntaxHighlight_GeSHi.php");
 
 # CodeEditor extension for more featured editor for code pages -- Moussekateer 16/11/13
-#require_once( "$IP/extensions/CodeEditor/CodeEditor.php" );
+require_once( "$IP/extensions/CodeEditor/CodeEditor.php" );
 
 # New MediaWiki notification system
 require_once "$IP/extensions/Echo/Echo.php";
 
 # NewUserMessage extension
-require_once "$IP/extensions/NewUserMessage/NewUserMessage.php";
+wfLoadExtension( 'NewUserMessage' );
 $wgNewUserSuppressRC = true;
 
 # DISABLE REGISTRATION -- RJackson 14/Dec/2015
@@ -494,7 +490,7 @@ $wgNewUserSuppressRC = true;
 #$wgGroupPermissions['*']['createaccount'] = false;
 
 # AbuseFilters extension
-require_once "$IP/extensions/AbuseFilter/AbuseFilter.php";
+wfLoadExtension( 'AbuseFilter' );
 $wgGroupPermissions['sysop']['abusefilter-modify'] = true;
 $wgGroupPermissions['sysop']['abusefilter-log-detail'] = true;
 $wgGroupPermissions['sysop']['abusefilter-view'] = true;
