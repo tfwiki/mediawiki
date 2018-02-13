@@ -148,7 +148,7 @@ function write_cache($cache)
 {
 	global $config;
 	$memcache = get_memcache();
-	$memcache->set( NAMEMAP_CACHE_KEY, $cache, 0, $config['cache_duration'] );
+	$memcache->set( NAMEMAP_CACHE_KEY, $cache, $config['cache_duration'] );
 }
 function load_data()
 {
