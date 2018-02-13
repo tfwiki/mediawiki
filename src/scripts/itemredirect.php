@@ -53,7 +53,9 @@ function error($error)
 }
 function url_param($param)
 {
-	return rawurlencode(str_replace(' ', '_', trim($param)));
+	// Replace spaces with underscores
+	// Ignore newlines
+	return rawurlencode(str_replace("\n", '', str_replace(' ', '_', trim($param))));
 }
 function language_map($lang) {
 	global $language_mapping;
@@ -66,7 +68,7 @@ function build_article($page, $lang=null)
 {
 	global $config;
 	if($lang == null || $lang == $config['default_language']) {
-		return $page;
+		return url_param($page);
 	}
 	return str_replace('%ARTICLE%', url_param($page), str_replace('%LANGUAGE%', url_param($lang), $config['article_format']));
 }
