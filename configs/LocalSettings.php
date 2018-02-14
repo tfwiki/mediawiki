@@ -464,19 +464,10 @@ $wgRedditThumbnailImage = 'http://wiki.teamfortress.com/w/images/3/3f/Reddit_thu
 # Scribunto extension for running lua code on wiki -- Moussekateer 16/11/13
 require_once "$IP/extensions/Scribunto/Scribunto.php";
 $wgScribuntoDefaultEngine = 'luastandalone';
-$wgScribuntoUseGeSHi = false;  # Turned off now that SyntaxHighlight_GeSHi was uninstalled due to XSS vulns.
-                               # This might still work though if Scribunto bundles its own GeSHi JS, dunno.
-    # Protect Module namespace so that only sysops and moderators can edit it
-	#$wgNamespaceProtection[NS_MODULE] = array( 'module-edit' );
-	#$wgGroupPermissions['moderators']['module-edit'] = true;
-	#$wgGroupPermissions['sysop']['module-edit'] = true;
-
-# SyntaxHighlight_GeSHi extension for code syntax highlighting on wiki pages -- Moussekateer 16/11/13
-# Disabled by Wind due to gvengel-reported XSS vulns.
-# require_once("$IP/extensions/SyntaxHighlight_GeSHi/SyntaxHighlight_GeSHi.php");
 
 # CodeEditor extension for more featured editor for code pages -- Moussekateer 16/11/13
 require_once( "$IP/extensions/CodeEditor/CodeEditor.php" );
+$wgScribuntoUseCodeEditor = true;
 
 # New MediaWiki notification system
 require_once "$IP/extensions/Echo/Echo.php";
