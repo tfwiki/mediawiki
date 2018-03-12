@@ -53,7 +53,7 @@ COPY src/extensions/CategoryTree /var/www/html/w/extensions/CategoryTree
 COPY src/extensions/CodeEditor /var/www/html/w/extensions/CodeEditor
 COPY src/extensions/Echo /var/www/html/w/extensions/Echo
 COPY src/extensions/EmbedVideo /var/www/html/w/extensions/EmbedVideo
-COPY src/extensions/GeeQuBox /var/www/html/w/extensions/GeeQuBox
+COPY src/extensions/MultimediaViewer /var/www/html/w/extensions/MultimediaViewer
 COPY src/extensions/NewUserMessage /var/www/html/w/extensions/NewUserMessage
 COPY src/extensions/RedditThumbnail /var/www/html/w/extensions/RedditThumbnail
 COPY src/extensions/Scribunto /var/www/html/w/extensions/Scribunto

@@ -454,8 +454,7 @@ require_once( "$IP/extensions/WikiEditor/WikiEditor.php" );
 require_once("$IP/extensions/Renameuser/Renameuser.php");
 $wgGroupPermissions['sysop']['renameuser'] = true;
 
-# GeeQuBox extension -- Moussekateer 06/22/13
-require_once("$IP/extensions/GeeQuBox/GeeQuBox.php");
+require_once "$IP/extensions/MultimediaViewer/MultimediaViewer.php";
 
 # Moussekateer's RedditThumbnail extension for setting thumbnail images for links on reddit
 require_once("$IP/extensions/RedditThumbnail/RedditThumbnail.php");

@@ -10,9 +10,6 @@
 [submodule "src/extensions/Echo"]
 	path = src/extensions/Echo
 	url = https://gerrit.wikimedia.org/r/mediawiki/extensions/Echo
-[submodule "src/extensions/GeeQuBox"]
-	path = src/extensions/GeeQuBox
-	url = https://github.com/ThePortalWiki/GeeQuBox.git
 [submodule "src/extensions/NewUserMessage"]
 	path = src/extensions/NewUserMessage
 	url = https://gerrit.wikimedia.org/r/mediawiki/extensions/NewUserMessage
@@ -34,3 +31,6 @@
 [submodule "src/extensions/Sentry"]
 	path = src/extensions/Sentry
 	url = https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Sentry.git
+[submodule "src/extensions/MultimediaViewer"]
+	path = src/extensions/MultimediaViewer
+	url = https://gerrit.wikimedia.org/r/p/mediawiki/extensions/MultimediaViewer.git
