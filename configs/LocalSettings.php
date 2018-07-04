@@ -489,6 +489,11 @@ $wgGroupPermissions['sysop']['abusefilter-private'] = true;
 $wgGroupPermissions['sysop']['abusefilter-modify-restricted'] = true;
 $wgGroupPermissions['sysop']['abusefilter-revert'] = true;
 
+
+wfLoadExtension( 'CheckUser' );
+$wgGroupPermissions['sysop']['checkuser'] = true;
+$wgGroupPermissions['sysop']['checkuser-log'] = true;
+
 // VARNISH_HOST can be a CSV of hostnames
 if (array_key_exists('VARNISH_HOST', $_ENV)) {
     $wgUseSquid = true;

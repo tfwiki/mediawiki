@@ -34,3 +34,6 @@
 [submodule "src/extensions/MultimediaViewer"]
 	path = src/extensions/MultimediaViewer
 	url = https://gerrit.wikimedia.org/r/p/mediawiki/extensions/MultimediaViewer.git
+[submodule "src/extensions/CheckUser"]
+	path = src/extensions/CheckUser
+	url = https://gerrit.wikimedia.org/r/p/mediawiki/extensions/CheckUser.git
