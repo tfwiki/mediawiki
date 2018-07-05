@@ -522,6 +522,36 @@ if (array_key_exists('VARNISH_HOST', $_ENV)) {
     }
 }
 
+// TRUSTED_PROXIES can be a CSV of hostnames
+if (array_key_exists('TRUSTED_PROXIES', $_ENV)) {
+   
+    // Resolve to IPs, in case some/all of these hosts are round-robin DNS:
+    $trustedProxiesHosts = explode(',', $_ENV['TRUSTED_PROXIES']);
+    $trustedProxiesIps = array_filter(array_map(function($host) {
+        if (strpos($host, '/') !== false) {
+            // CIDR notation, keep as is
+            return [$host];
+        }
+
+        if (strpos($host, ':') === false) {
+            return gethostbynamel($host);
+        }
+
+        // Preserve given port
+        list($host, $port) = explode(':', $host);
+        $ips = gethostbynamel($host) ?: [];
+
+        return array_map(function($ip) use ($port) {
+            return sprintf("%s:%s", $ip, $port);
+        }, $ips);
+    }, $trustedProxiesHosts));
+
+    // Flatten 2d array
+    if (!empty($trustedProxiesIps)) {
+        $wgSquidServersNoPurge = call_user_func_array(array_merge, $trustedProxiesIps);
+    }
+}
+
 // MEMCACHED_HOST can be a CSV of hostnames
 if (array_key_exists('MEMCACHED_HOST', $_ENV)) {
     $wgMainCacheType = CACHE_MEMCACHED;

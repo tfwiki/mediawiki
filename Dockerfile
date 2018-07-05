@@ -98,5 +98,6 @@ ENV SMTP_PORT=
 ENV SMTP_USERNAME=
 ENV STEAM_API_KEY=
 ENV VARNISH_HOST=
+ENV TRUSTED_PROXIES=
 
 CMD /usr/local/bin/configure-blackfire && /usr/local/bin/configure-mediawiki && apache2-foreground
