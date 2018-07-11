@@ -4,7 +4,7 @@
 
 $config = array(
 	'api_key' => getenv('STEAM_API_KEY'),
-	'cache_duration' => 900,
+	'cache_duration' => 60*60*24*7, // 7 days
 	'wiki_default' => getenv('SERVER_URL') . '/wiki/%ARTICLE%', // Default article URL format
 	'wiki_lang' => getenv('SERVER_URL') . '/wiki/%ARTICLE%',    // Localised article URL format
 	'article_format' => '%ARTICLE%/%LANGUAGE%', 				// Format of article name in another language
@@ -138,30 +138,38 @@ function get_memcache()
 	}
 	return $memcache;
 }
-function load_cache()
+function load_cache($id)
 {
 	global $config;
 	$memcache = get_memcache();
-	$cache = $memcache->get( NAMEMAP_CACHE_KEY );
+	$cache = $memcache->get( NAMEMAP_CACHE_KEY . '_' . $id );
 	if( empty( $cache ) ) return false;
 	return $cache;
 }
-function write_cache($cache)
+function write_cache($cache, $id)
 {
 	global $config;
 	$memcache = get_memcache();
-	$memcache->set( NAMEMAP_CACHE_KEY, $cache, $config['cache_duration'] );
+	$memcache->set( NAMEMAP_CACHE_KEY . '_' . $id, $cache, $config['cache_duration'] );
 }
-function load_data()
+function load_data($id)
 {
 	global $config;
-	$cache=load_cache();
+	$cache=load_cache($id);
 	if($cache && !array_key_exists('rj_busta_cache', $_GET))
 	{
 		return $cache;
 	}
 	// Otherwise, gotta refresh the cache
-	$data = curl_fetch( 'https://api.steampowered.com/IEconItems_440/GetSchema/v0001/?key='.rawurlencode($config['api_key']).'&language=english&format=json' );
+	
+        // Otherwise, gotta refresh the cache
+	$url = 'https://api.steampowered.com/IEconItems_440/GetSchemaItems/v0001/?' . http_build_query([
+			'key' => $config['api_key'],
+			'language' => 'english',
+			'format' => 'json',
+			'start' => $id
+	]);
+	$data = curl_fetch($url);
 	$json = @json_decode( $data, true );
 	if(!$json) {
 		error('Received invalid data from Steam API');
@@ -173,7 +181,7 @@ function load_data()
 	$cache = array(
 		'items' => $items
 	);
-	write_cache($cache);
+	write_cache($cache, $id);
 	return $cache;
 }
 function redirect($url)
@@ -199,7 +207,7 @@ if(!intval($_GET['id'])) {
 	http_response_code(400);
 	error('Malformed ID');
 }
-$cached_data = load_data();
+$cached_data = load_data($_GET['id']);
 $items = $cached_data['items'];
 if(!isset($items[$_GET['id']])) {
 	http_response_code(404);
