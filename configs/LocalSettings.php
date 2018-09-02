@@ -34,7 +34,7 @@ set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_includ
 require_once( "$IP/includes/DefaultSettings.php" );
 
 # If PHP's memory limit is very low, some operations may fail.
-ini_set( 'memory_limit', '128M' );
+ini_set( 'memory_limit', '1G' );
 # If shell memory is too low, imagemagick will fail.
 $wgMaxShellMemory = 2097152;
 
