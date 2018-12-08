@@ -358,10 +358,6 @@ $wgGroupPermissions['autoconfirmed']['skipcaptcha'] = true;  // Disable Captcha 
 $wgCaptchaDirectory = "$wgUploadDirectory/alpha";  // directory to store captcha images
 $wgCaptchaSecret = getenv("CAPTCHA_SECRET");
 
-# Javascript error tracking
-wfLoadExtension( 'Sentry' );
-$wgSentryDsn = getenv('SENTRY_DSN');
-
 
 # Uploading local data
 #require_once 'extensions/SpecialUploadLocal/SpecialUploadLocal.php';

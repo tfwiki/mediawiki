@@ -58,7 +58,6 @@ COPY src/extensions/MultimediaViewer /var/www/html/w/extensions/MultimediaViewer
 COPY src/extensions/NewUserMessage /var/www/html/w/extensions/NewUserMessage
 COPY src/extensions/RedditThumbnail /var/www/html/w/extensions/RedditThumbnail
 COPY src/extensions/Scribunto /var/www/html/w/extensions/Scribunto
-COPY src/extensions/Sentry /var/www/html/w/extensions/Sentry
 COPY src/extensions/UserMerge /var/www/html/w/extensions/UserMerge
 
 # Config templates
