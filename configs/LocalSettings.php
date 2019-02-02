@@ -119,7 +119,7 @@ $wgAntiLockFlags = ALF_NO_LINK_LOCK | ALF_NO_BLOCK_LOCK;
 ## If you use ImageMagick (or any other shell command) on a
 ## Linux server, this will need to be set to the name of an
 ## available UTF-8 locale
-$wgShellLocale = "en_US.utf8";
+$wgShellLocale = "C.UTF-8";
 
 ## If you want to use image uploads under safe mode,
 ## create the directories images/archive, images/thumb and
