@@ -1,4 +1,5 @@
-FROM mediawiki:1.27.4
+FROM mediawiki:1.27.5
+# When updating, also update composer.json (1.27.5 was released as 1.27.4 in composer tho)
 
 # Luxuries
 RUN apt-get update && apt-get install -y \
@@ -17,7 +18,6 @@ RUN a2enmod headers
 
 # MediaWiki needs these extra extensions
 RUN docker-php-ext-install sockets
-RUN pear install MAIL Net_SMTP
 RUN pecl install memcached && \
     docker-php-ext-enable memcached
 RUN curl -sS https://getcomposer.org/installer | \
