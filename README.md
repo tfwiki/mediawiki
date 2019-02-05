@@ -1,24 +1,24 @@
 [![Docker Automated build](https://img.shields.io/docker/automated/tfwiki/mediawiki.svg)](https://hub.docker.com/r/tfwiki/mediawiki/)
 [![Docker Build Status](https://img.shields.io/docker/build/tfwiki/mediawiki.svg)](https://hub.docker.com/r/tfwiki/mediawiki/)
 
-Team Fortress Wiki
-====================
+# Team Fortress Wiki
 
 This repository is a clone from the production repository hosted on Valve's servers. It is in the process of being cleaned up and simplified into a set of Dockerfiles and supporting files, which can be used to reliably build an almost like-for-like reproduction of the Valve-hosted Team Fortress Wiki.
 
 The key differences between the image built by these Dockerfiles and the Valve-hosted site are:
-* This repository runs PHP 5.6
-* ...
+
+- This repository runs PHP 5.6
+- ...
 
 ## Running locally
 
 The wiki can be ran locally via `docker-compose`:
 
-* Build a `tfwiki/mediawiki:local` image from source: `make`
-* Update your hosts file to map `tfwiki.localhost` to the host IP (presumably `127.0.0.1`)
-* Create `.env` file with the variables to configure your stack (`cp .env.example .env`; `.env.example` is pre-configured for running locally)
-* Generate some self-signed SSL certs: `make certs`
-* Bring up the stack! `docker-compose up -d`
+- Build a `tfwiki/mediawiki:local` image from source: `make`
+- Update your hosts file to map `tfwiki.localhost` to the host IP (presumably `127.0.0.1`)
+- Create `.env` file with the variables to configure your stack (`cp .env.example .env`; `.env.example` is pre-configured for running locally)
+- Generate some self-signed SSL certs: `make certs`
+- Bring up the stack! `docker-compose up -d`
 
 ### MediaWiki
 
@@ -34,27 +34,28 @@ Once we have the entire site running via Docker, we'll then upgrading MediaWiki.
 
 We can configure this `tfwiki/mediawiki` container with the following environmental variables:
 
-Variable                  | Default                               | Associated MediaWiki variable | Notes
-------------------------- | ------------------------------------- | ----------------------------- | -----
-`CAPTCHA_SECRET`          | *Required*                            | `$wgCaptchaSecret`            | 
-`DB_DB`                   | `wiki`                                | `$wgDBname`                   |
-`DB_HOST`                 | `db`                                  | `$wgDBserver`                 |
-`DB_PASSWORD`             | –                                     | `$wgDBpassword`               |
-`DB_TYPE`                 | `mysql`                               | `$wgDBtype`                   |
-`DB_USER`                 | `wiki`                                | `$wgDBuser`                   |
-`EMAIL_EMERGENCY_CONTACT` | *Required with SMTP_\**               | `$wgEmergencyContact`         | 
-`EMAIL_PASSWORD_SENDER `  | *Required with SMTP_\**               | `$wgPasswordSender`           | 
-`SENTRY_DSN`              | -                                     |                               | Used to report errors to [Sentry](https://sentry.io)
-`SMTP_HOST`               | -                                     | `$wgSMTP['Host']`             |
-`SMTP_IDHOST`             | -                                     | `$wgSMTP['IDHost']`           |
-`SMTP_PORT`               | -                                     | `$wgSMTP['port']`             |
-`SMTP_AUTH`               | -                                     | `$wgSMTP['auth']`             |
-`SMTP_USERNAME`           | -                                     | `$wgSMTP['username']`         |
-`SMTP_PASSWORD`           | -                                     | `$wgSMTP['password']`         |
-`MEMCACHED_HOST`          |                                       | `$wgMemCachedServers`         | Can declare CSV. If this is blank we'll use MediaWiki's default cache settings
-`SECRET_KEY`              | *Required*                            | `$wgSecretKey`                |
-`SERVER_URL`              | *Required*                            | `$wgServer`                   |
-`SITENAME`                | `Team Fortress Wiki`                  | `$wgSitename`                 |
-`STEAM_API_KEY`           |                                       | N/A                           |
-`VARNISH_HOST`            | `varnish`                             | `$wgSquidServers`             | Can declare CSV. If this is blank and Varnish is used, MediaWiki won't purge items from the cache
-`TRUSTED_PROXIES          | `wiki.teamfortress.com,10.138.0.0/24` | `$wgSquidServersNoPurge`      | Can declare CSV. Make sure MediaWiki can properly resolve IP addresses through external load balancers
+| Variable                                                                                                                                                                                   | Default                    | Associated MediaWiki variable | Notes                                                                                             |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------- |
+| `DB_DB`                                                                                                                                                                                    | `wiki`                     | `$wgDBname`                   |
+| `DB_HOST`                                                                                                                                                                                  | `db`                       | `$wgDBserver`                 |
+| `DB_PASSWORD`                                                                                                                                                                              | –                          | `$wgDBpassword`               |
+| `DB_TYPE`                                                                                                                                                                                  | `mysql`                    | `$wgDBtype`                   |
+| `DB_USER`                                                                                                                                                                                  | `wiki`                     | `$wgDBuser`                   |
+| `EMAIL_EMERGENCY_CONTACT`                                                                                                                                                                  | \*Required with SMTP\_\*\* | `$wgEmergencyContact`         |
+| `EMAIL_PASSWORD_SENDER`                                                                                                                                                                    | \*Required with SMTP\_\*\* | `$wgPasswordSender`           |
+| `MEMCACHED_HOST`                                                                                                                                                                           |                            | `$wgMemCachedServers`         | Can declare CSV. If this is blank we'll use MediaWiki's default cache settings                    |
+| `RECAPTCHA_KEY`                                                                                                                                                                            | _Required_                 | `$wgReCaptchaSiteKey`         | Credentials for a ReCaptcha v2 Tickbox                                                            |
+| `RECAPTCHA_SECRET`                                                                                                                                                                         | _Required_                 | `$wgReCaptchaSecretKey`       | Credentials for a ReCaptcha v2 Tickbox                                                            |
+| `SECRET_KEY`                                                                                                                                                                               | _Required_                 | `$wgSecretKey`                |
+| `SENTRY_DSN`                                                                                                                                                                               | -                          |                               | Used to report errors to [Sentry](https://sentry.io)                                              |
+| `SERVER_URL`                                                                                                                                                                               | _Required_                 | `$wgServer`                   |
+| `SITENAME`                                                                                                                                                                                 | `Team Fortress Wiki`       | `$wgSitename`                 |
+| `SMTP_AUTH`                                                                                                                                                                                | -                          | `$wgSMTP['auth']`             |
+| `SMTP_HOST`                                                                                                                                                                                | -                          | `$wgSMTP['Host']`             |
+| `SMTP_IDHOST`                                                                                                                                                                              | -                          | `$wgSMTP['IDHost']`           |
+| `SMTP_PASSWORD`                                                                                                                                                                            | -                          | `$wgSMTP['password']`         |
+| `SMTP_PORT`                                                                                                                                                                                | -                          | `$wgSMTP['port']`             |
+| `SMTP_USERNAME`                                                                                                                                                                            | -                          | `$wgSMTP['username']`         |
+| `STEAM_API_KEY`                                                                                                                                                                            |                            | N/A                           |
+| `TRUSTED_PROXIES |`wiki.teamfortress.com,10.138.0.0/24`|`\$wgSquidServersNoPurge` | Can declare CSV. Make sure MediaWiki can properly resolve IP addresses through external load balancers |
+| `VARNISH_HOST`                                                                                                                                                                             | `varnish`                  | `$wgSquidServers`             | Can declare CSV. If this is blank and Varnish is used, MediaWiki won't purge items from the cache |

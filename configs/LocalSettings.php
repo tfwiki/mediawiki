@@ -303,61 +303,18 @@ $wgDefaultUserOptions["watchdefault"] = false;
 #  upgraded to 1.5.1, RJackson 05/15/13
 require_once("$IP/extensions/ParserFunctions/ParserFunctions.php");
 
-## ConfirmEdit and FancyCaptcha
-require_once( "$IP/extensions/ConfirmEdit/ConfirmEdit.php" );
-require_once( "$IP/extensions/ConfirmEdit/QuestyCaptcha.php" );
+# Hopefully NoCaptcha will squash dem bots
+wfLoadExtensions([ 'ConfirmEdit', 'ConfirmEdit/ReCaptchaNoCaptcha' ]);
+$wgCaptchaClass = 'ReCaptchaNoCaptcha';
+$wgReCaptchaSiteKey = getenv('RECAPTCHA_KEY');
+$wgReCaptchaSecretKey = getenv('RECAPTCHA_SECRET');
 
-## ConfirmEdit settings
-# $ceAllowConfirmedEmail = true;
-$wgCaptchaClass = 'QuestyCaptcha';
-
-## QuestyCaptcha settings, pwiki method
-#$randomHash = substr(sha1(strval(rand())), rand(1, 4), rand(12, 16));
-#$randomHashSplitIndex = rand(2, strlen($randomHash) - 2);
-#$randomHashPart1 = substr($randomHash, 0, $randomHashSplitIndex);
-#$randomJunk = substr(sha1(strval(rand())), rand(1, 4), rand(12, 16));
-#$randomHashPart2 = substr($randomHash, $randomHashSplitIndex);
-#$wgCaptchaQuestions[] = array( 'question' => '(Anti-spam) Please enter the following characters into the textfield (do not copy/paste, it will not paste the right thing): <code>'.$randomHashPart1.'<span style="display: inline-block; width: 0px; opacity: 0; overflow: hidden">'.$randomJunk.'</span>'.$randomHashPart2.'</code>', 'answer' =>
-#    $randomHash
-#);
-
-$wgCaptchaQuestions[] = array(
-    'question' => 'Which company developed <a href="/wiki/Team_Fortress_2">Team Fortress 2</a>?',
-    'answer' => array('valve', 'valvesoftware', 'valve software', 'valve corporation')
-);
-$wgCaptchaQuestions[] = array(
-    'question' => 'From which city does the <a href="/wiki/Scout#Bio">Scout</a> come from?',
-    'answer' => array('boston', 'boston massachusetts', 'boston, massachusetts')
-);
-$wgCaptchaQuestions[] = array(
-    'question' => 'Which was the <a href="/wiki/Soldier#Bio">Soldier</a>\s favourite World War?',
-    'answer' => array('2', 'two')
-);
-$wgCaptchaQuestions[] = array(
-    'question' => 'What is the <a href="/wiki/Demoman#Bio">Demoman</a>\'s name?',
-    'answer' => array('tavish', 'tavish degroot', 'tavish finnegan degroot')
-);
-$wgCaptchaQuestions[] = array(
-    'question' => 'What is the <a href="/wiki/Heavy#Bio">Heavy</a>\'s motto?',
-    'answer' => array('shooting good', 'shooting good.', '"shooting good."')
-);
-$wgCaptchaQuestions[] = array(
-    'question' => 'What is the <a href="/wiki/Engineer#Bio">Engineer</a>\'s job?',
-    'answer' => 'area denial'
-);
-#$wgCaptchaQuestions[] = array(
-#    'question' => '',
-#    'answer' => ''
-#);
-
-$wgCaptchaTriggers['addurl']                        = true;  // Force Captcha when adding urls to pages
-$wgGroupPermissions['moderator']['skipcaptcha']     = true;  // Disable Captcha for moderators
-$wgGroupPermissions['autoconfirmed']['skipcaptcha'] = true;  // Disable Captcha for autoconfirmed users
-
-## FancyCaptcha settings
-$wgCaptchaDirectory = "$wgUploadDirectory/alpha";  // directory to store captcha images
-$wgCaptchaSecret = getenv("CAPTCHA_SECRET");
-
+$wgGroupPermissions['*'            ]['skipcaptcha'] = false;
+$wgGroupPermissions['user'         ]['skipcaptcha'] = false;
+$wgGroupPermissions['autoconfirmed']['skipcaptcha'] = false;
+$wgGroupPermissions['bot'          ]['skipcaptcha'] = true; // registered bots
+$wgGroupPermissions['sysop'        ]['skipcaptcha'] = true;
+$wgGroupPermissions['moderator'    ]['skipcaptcha'] = true;
 
 # Uploading local data
 #require_once 'extensions/SpecialUploadLocal/SpecialUploadLocal.php';

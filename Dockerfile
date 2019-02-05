@@ -73,11 +73,12 @@ RUN chmod +x /usr/local/bin/configure-*
 VOLUME /var/www/html/w/images
 
 # Required environmental variables
-ENV CAPTCHA_SECRET=
 ENV DB_DATABASE='wiki'
 ENV DB_HOST='db'
 ENV DB_TYPE='mysql'
 ENV DB_USER='root'
+ENV RECAPTCHA_KEY=
+ENV RECAPTCHA_SECRET=
 ENV SECRET_KEY=
 ENV SERVER_URL='https://tfwiki.localhost'
 ENV SITENAME='Local Team Fortress Wiki'
