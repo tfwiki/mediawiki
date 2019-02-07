@@ -546,3 +546,6 @@ if (array_key_exists('EMAIL_EMERGENCY_CONTACT', $_ENV)) {
 if (array_key_exists('EMAIL_PASSWORD_SENDER', $_ENV)) {
     $wgPasswordSender = $_ENV['EMAIL_PASSWORD_SENDER'];
 }
+
+// Disable database-intensive features (certain special pages); we'll render those via cronjobbed maintenance scripts
+$wgMiserMode = true;
