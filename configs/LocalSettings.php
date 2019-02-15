@@ -549,3 +549,4 @@ if (array_key_exists('EMAIL_PASSWORD_SENDER', $_ENV)) {
 
 // Disable database-intensive features (certain special pages); we'll render those via cronjobbed maintenance scripts
 $wgMiserMode = true;
+$wgQueryCacheLimit = 10000;
