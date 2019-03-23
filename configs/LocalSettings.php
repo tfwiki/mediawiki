@@ -419,6 +419,12 @@ wfLoadExtension( 'CheckUser' );
 $wgGroupPermissions['sysop']['checkuser'] = true;
 $wgGroupPermissions['sysop']['checkuser-log'] = true;
 
+// wfLoadExtension( 'Flow' ); // Uncomment this for MW 1.28
+require_once "$IP/extensions/Flow/Flow.php";
+$wgNamespaceContentModels[NS_TALK] = 'flow-board';
+$wgNamespaceContentModels[NS_USER_TALK] = 'flow-board';
+
+
 // VARNISH_HOST can be a CSV of hostnames
 if (array_key_exists('VARNISH_HOST', $_ENV)) {
     $wgUseSquid = true;
