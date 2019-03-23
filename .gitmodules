@@ -40,3 +40,6 @@
 [submodule "src/extensions/Flow"]
 	path = src/extensions/Flow
 	url = git@github.com:wikimedia/mediawiki-extensions-Flow.git
+[submodule "src/extensions/Thanks"]
+	path = src/extensions/Thanks
+	url = git@github.com:wikimedia/mediawiki-extensions-Thanks.git

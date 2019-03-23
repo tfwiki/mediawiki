@@ -424,6 +424,8 @@ require_once "$IP/extensions/Flow/Flow.php";
 $wgNamespaceContentModels[NS_TALK] = 'flow-board';
 $wgNamespaceContentModels[NS_USER_TALK] = 'flow-board';
 
+wfLoadExtension( 'Thanks' );
+
 
 // VARNISH_HOST can be a CSV of hostnames
 if (array_key_exists('VARNISH_HOST', $_ENV)) {
