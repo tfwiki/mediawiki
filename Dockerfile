@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends && \
     rm -r /var/lib/apt/lists/*
 
+RUN curl -sS https://getcomposer.org/installer | \
+    php -- --install-dir=/usr/bin/ --filename=composer
+
 # We want Apache's rewrite module
 RUN a2enmod rewrite
 RUN a2enmod headers
@@ -33,7 +36,7 @@ COPY src/favicon.ico /var/www/html/
 COPY src/shell /var/www/html/shell
 
 # Scripts
-COPY src/scripts  /var/www/html/scripts
+COPY src/scripts /var/www/html/scripts
 
 # Valve skin
 # TODO: Check how much of this is actually used, and clean up
@@ -58,6 +61,10 @@ COPY src/extensions/UserMerge /var/www/html/w/extensions/UserMerge
 COPY configs/php.ini /usr/local/etc/php/php.ini
 COPY configs/apache.conf /etc/apache2/sites-available/000-default.conf
 COPY configs/LocalSettings.php /var/www/html/w/LocalSettings.php
+
+# Install sentry extension, cos I cant think of a better way of doing this
+RUN composer require sentry/sentry \
+    --working-dir=/var/www/html/w/ --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader
 
 # Generate config at runtime
 COPY scripts/configure-mediawiki.sh /usr/local/bin/configure-mediawiki
