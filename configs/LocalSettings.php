@@ -558,7 +558,3 @@ if (array_key_exists('EMAIL_PASSWORD_SENDER', $_ENV)) {
 // Disable database-intensive features (certain special pages); we'll render those via cronjobbed maintenance scripts
 $wgMiserMode = true;
 $wgQueryCacheLimit = 10000;
-
-
-// Force all thumbnails to rebuild due to cache fuckery
-$wgThumbnailEpoch = 20200502193657;
