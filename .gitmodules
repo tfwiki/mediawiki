@@ -1,12 +1,6 @@
 [submodule "src/extensions/AbuseFilter"]
 	path = src/extensions/AbuseFilter
 	url = https://github.com/wikimedia/mediawiki-extensions-AbuseFilter
-[submodule "src/extensions/CategoryTree"]
-	path = src/extensions/CategoryTree
-	url = https://github.com/wikimedia/mediawiki-extensions-CategoryTree
-[submodule "src/extensions/CodeEditor"]
-	path = src/extensions/CodeEditor
-	url = https://github.com/wikimedia/mediawiki-extensions-CodeEditor
 [submodule "src/extensions/Echo"]
 	path = src/extensions/Echo
 	url = https://github.com/wikimedia/mediawiki-extensions-Echo
@@ -25,9 +19,6 @@
 [submodule "src/extensions/EmbedVideo"]
 	path = src/extensions/EmbedVideo
 	url = https://gitlab.com/hydrawiki/extensions/EmbedVideo.git
-[submodule "src/extensions/MultimediaViewer"]
-	path = src/extensions/MultimediaViewer
-	url = https://github.com/wikimedia/mediawiki-extensions-MultimediaViewer
 [submodule "src/extensions/CheckUser"]
 	path = src/extensions/CheckUser
 	url = https://github.com/wikimedia/mediawiki-extensions-CheckUser
@@ -37,3 +28,6 @@
 [submodule "src/extensions/Thanks"]
 	path = src/extensions/Thanks
 	url = git@github.com:wikimedia/mediawiki-extensions-Thanks.git
+[submodule "src/extensions/Nuke"]
+	path = src/extensions/Nuke
+	url = git@github.com:wikimedia/mediawiki-extensions-Nuke.git
