@@ -1,5 +1,4 @@
-FROM mediawiki:1.27.5
-# When updating, also update composer.json (1.27.5 was released as 1.27.4 in composer tho)
+FROM mediawiki:1.28
 
 # Luxuries
 RUN apt-get update && apt-get install -y \
@@ -20,18 +19,11 @@ RUN a2enmod headers
 RUN docker-php-ext-install sockets
 RUN pecl install memcached && \
     docker-php-ext-enable memcached
-RUN curl -sS https://getcomposer.org/installer | \
-    php -- --install-dir=/usr/bin/ --filename=composer
 
 # We want the wiki in a w/ subfolder
 RUN mv /var/www/html /var/www/i-will-be-w && \
     mkdir -p /var/www/html && \
     mv /var/www/i-will-be-w /var/www/html/w
-
-# Install composer dependencies
-COPY composer.json /var/www/html/w/composer.json
-COPY composer.lock /var/www/html/w/composer.lock
-RUN composer install --working-dir=/var/www/html/w/ --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader
 
 # Assets
 COPY src/fonts /var/www/html/fonts

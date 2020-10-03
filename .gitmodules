@@ -24,7 +24,7 @@
 	url = https://github.com/wikimedia/mediawiki-extensions-UserMerge
 [submodule "src/extensions/EmbedVideo"]
 	path = src/extensions/EmbedVideo
-	url = https://github.com/HydraWiki/mediawiki-embedvideo.git
+	url = https://gitlab.com/hydrawiki/extensions/EmbedVideo.git
 [submodule "src/extensions/MultimediaViewer"]
 	path = src/extensions/MultimediaViewer
 	url = https://github.com/wikimedia/mediawiki-extensions-MultimediaViewer
