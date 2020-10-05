@@ -179,7 +179,7 @@ $wgUsePathInfo = true;
 $wgNamespacesWithSubpages = array_fill(0, 200, true);
 
 # The DB is read-only and the message is displayed.
-#$wgReadOnly = "<b style=\"color:red;\">Attention!</b> The site is currently undergoing system maintenance and is locked from editing.";
+# $wgReadOnly = ( PHP_SAPI === 'cli' ) ? false : 'This wiki is currently being upgraded to a newer software version. Please check back in a couple of hours.';
 
 # User permissions -- don't allow anons to edit
 $wgGroupPermissions['*']['edit']            = false;
