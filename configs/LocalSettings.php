@@ -55,6 +55,7 @@ $wgHitcounterUpdateFreq = 1000;
 
 $wgSitename         = getenv("SITENAME");
 $wgServer           = getenv("SERVER_URL");
+$wgEnableCanonicalServerLink = true;
 
 ## The URL base path to the directory containing the wiki;
 ## defaults for all runtime URL paths are based off of this.
