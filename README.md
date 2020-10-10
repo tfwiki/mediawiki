@@ -26,6 +26,7 @@ The wiki can be ran locally via `docker-compose`:
 | `EMAIL_EMERGENCY_CONTACT` | \*Required with SMTP\_\*\*            | `$wgEmergencyContact`         |
 | `EMAIL_PASSWORD_SENDER`   | \*Required with SMTP\_\*\*            | `$wgPasswordSender`           |
 | `MEMCACHED_HOST`          |                                       | `$wgMemCachedServers`         | Can declare CSV. If this is blank we'll use MediaWiki's default cache settings                         |
+| `READ_ONLY_MESSAGE`               | -                                     | `$wgReadOnly`                 | If set, puts the Wiki into read-only mode with the given message.                                      |
 | `RECAPTCHA_KEY`           | _Required_                            | `$wgReCaptchaSiteKey`         | Credentials for a ReCaptcha v2 Tickbox                                                                 |
 | `RECAPTCHA_SECRET`        | _Required_                            | `$wgReCaptchaSecretKey`       | Credentials for a ReCaptcha v2 Tickbox                                                                 |
 | `SECRET_KEY`              | _Required_                            | `$wgSecretKey`                |
