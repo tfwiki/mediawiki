@@ -219,7 +219,7 @@ $wgGroupPermissions['bot']['noratelimits']      = true;
 
 ## Permissions for Sysops
 #$wgGroupPermissions['sysop'] = $wgGroupPermissions['moderator'];
-$wgGroupPermissions['sysop']['deleterevision']       = false;  // Allows sysops to delete revisions
+$wgGroupPermissions['sysop']['deleterevision']       = true;  // Allows sysops to delete revisions
 $wgGroupPermissions['sysop']['suppressredirect'] = true;
 $wgGroupPermissions['sysop']['newusers']             = true;  // Allows sysops to view new user log
 $wgGroupPermissions['sysop']['usermerge'] = true;
