@@ -1,14 +1,8 @@
-[![Docker Automated build](https://img.shields.io/docker/automated/tfwiki/mediawiki.svg)](https://hub.docker.com/r/tfwiki/mediawiki/)
-[![Docker Build Status](https://img.shields.io/docker/build/tfwiki/mediawiki.svg)](https://hub.docker.com/r/tfwiki/mediawiki/)
-
 # Team Fortress Wiki
 
-This repository is a clone from the production repository hosted on Valve's servers. It is in the process of being cleaned up and simplified into a set of Dockerfiles and supporting files, which can be used to reliably build an almost like-for-like reproduction of the Valve-hosted Team Fortress Wiki.
+Here lies the lil sprinklin' of config and extensions that turns MediaWiki into the Team Fortress Wiki.
 
-The key differences between the image built by these Dockerfiles and the Valve-hosted site are:
-
-- This repository runs PHP 5.6
-- ...
+The [Dockerfile](./Dockerfile) is our golden source of truth. It builds atop MediaWiki's own docker images, drops in our config and extensions, and exposes a few environmental variables to configure the site.
 
 ## Running locally
 
@@ -20,19 +14,7 @@ The wiki can be ran locally via `docker-compose`:
 - Generate some self-signed SSL certs: `make certs`
 - Bring up the stack! `docker-compose up -d`
 
-### MediaWiki
-
-For the first Dockerised build, we want to match (as closely as we can) to the Valve-hosted files, although with a cleaner repository.
-
-MediaWiki do not publish a docker image for the version of MediaWiki we require (v1.26.2), so [we have a fork of their repository](https://github.com/tfwiki/mediawiki-docker) building that image, which is published to `tfwiki/mediawiki:base-1.26.2`.
-
-Once we have the entire site running via Docker, we'll then upgrading MediaWiki.
-
-### TF Wiki
-
-`Dockerfile` is responsible for the actual build of the TF Wiki. This Dockerfile moves MediaWiki's files to match the production TF Wiki's directory structure, and then we're adding our extensions, and necessary supporting files to configure the Docker container at runtime.
-
-We can configure this `tfwiki/mediawiki` container with the following environmental variables:
+## Configuration
 
 | Variable                  | Default                               | Associated MediaWiki variable | Notes                                                                                                  |
 | ------------------------- | ------------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------ |
@@ -60,3 +42,13 @@ We can configure this `tfwiki/mediawiki` container with the following environmen
 | `STEAM_API_KEY`           |                                       | N/A                           |
 | `TRUSTED_PROXIES`         | `wiki.teamfortress.com,10.138.0.0/24` | `\$wgSquidServersNoPurge`     | Can declare CSV. Make sure MediaWiki can properly resolve IP addresses through external load balancers |
 | `VARNISH_HOST`            | `varnish`                             | `$wgSquidServers`             | Can declare CSV. If this is blank and Varnish is used, MediaWiki won't purge items from the cache      |
+
+## Versioning
+
+`tfwiki/mediawiki:[medawiki maj.min]-tfwiki[n]`
+
+We're not following semantic versioning or anything like that, because this is not a published package or product. It's being maintained in the open, but there's only one Team Fortress wiki y'know.
+
+Anywho, before October 2020 we were being lazy with our releases. Soon as we were ready to migrate to the Cloud we tagged 1.0.0 and have just incremented the patch number ever since.
+
+To introduce a bit more structure and clarity, from October 2020 onwards we'll follow MediaWiki's major.minor version, and then stick our own suffix on that to continue with our lazy incrementing strategy.

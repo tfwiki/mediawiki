@@ -1,5 +1,4 @@
-FROM mediawiki:1.27.5
-# When updating, also update composer.json (1.27.5 was released as 1.27.4 in composer tho)
+FROM mediawiki:1.31
 
 # Luxuries
 RUN apt-get update && apt-get install -y \
@@ -12,6 +11,9 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends && \
     rm -r /var/lib/apt/lists/*
 
+RUN curl -sS https://getcomposer.org/installer | \
+    php -- --install-dir=/usr/bin/ --filename=composer
+
 # We want Apache's rewrite module
 RUN a2enmod rewrite
 RUN a2enmod headers
@@ -20,18 +22,11 @@ RUN a2enmod headers
 RUN docker-php-ext-install sockets
 RUN pecl install memcached && \
     docker-php-ext-enable memcached
-RUN curl -sS https://getcomposer.org/installer | \
-    php -- --install-dir=/usr/bin/ --filename=composer
 
 # We want the wiki in a w/ subfolder
 RUN mv /var/www/html /var/www/i-will-be-w && \
     mkdir -p /var/www/html && \
     mv /var/www/i-will-be-w /var/www/html/w
-
-# Install composer dependencies
-COPY composer.json /var/www/html/w/composer.json
-COPY composer.lock /var/www/html/w/composer.lock
-RUN composer install --working-dir=/var/www/html/w/ --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader
 
 # Assets
 COPY src/fonts /var/www/html/fonts
@@ -41,7 +36,7 @@ COPY src/favicon.ico /var/www/html/
 COPY src/shell /var/www/html/shell
 
 # Scripts
-COPY src/scripts  /var/www/html/scripts
+COPY src/scripts /var/www/html/scripts
 
 # Valve skin
 # TODO: Check how much of this is actually used, and clean up
@@ -49,23 +44,30 @@ COPY src/skins/valve /var/www/html/w/skins/valve
 
 # MediaWiki extensions
 COPY src/extensions/AbuseFilter /var/www/html/w/extensions/AbuseFilter
-COPY src/extensions/CategoryTree /var/www/html/w/extensions/CategoryTree
 COPY src/extensions/CheckUser /var/www/html/w/extensions/CheckUser
-COPY src/extensions/CodeEditor /var/www/html/w/extensions/CodeEditor
 COPY src/extensions/Echo /var/www/html/w/extensions/Echo
 COPY src/extensions/EmbedVideo /var/www/html/w/extensions/EmbedVideo
 COPY src/extensions/Flow /var/www/html/w/extensions/Flow
-COPY src/extensions/MultimediaViewer /var/www/html/w/extensions/MultimediaViewer
 COPY src/extensions/NewUserMessage /var/www/html/w/extensions/NewUserMessage
 COPY src/extensions/RedditThumbnail /var/www/html/w/extensions/RedditThumbnail
 COPY src/extensions/Scribunto /var/www/html/w/extensions/Scribunto
 COPY src/extensions/Thanks /var/www/html/w/extensions/Thanks
 COPY src/extensions/UserMerge /var/www/html/w/extensions/UserMerge
+COPY src/extensions/Nuke /var/www/html/w/extensions/Nuke
 
 # Config templates
 COPY configs/php.ini /usr/local/etc/php/php.ini
 COPY configs/apache.conf /etc/apache2/sites-available/000-default.conf
 COPY configs/LocalSettings.php /var/www/html/w/LocalSettings.php
+
+# Install sentry extension, cos I cant think of a better way of doing this
+RUN composer require sentry/sdk \
+    --working-dir=/var/www/html/w/ --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader
+
+RUN composer install --no-dev --working-dir=/var/www/html/w/extensions/AbuseFilter
+RUN composer install --no-dev --working-dir=/var/www/html/w/extensions/CheckUser
+RUN composer install --no-dev --working-dir=/var/www/html/w/extensions/Echo
+RUN composer install --no-dev --working-dir=/var/www/html/w/extensions/Flow
 
 # Generate config at runtime
 COPY scripts/configure-mediawiki.sh /usr/local/bin/configure-mediawiki

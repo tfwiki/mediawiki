@@ -332,28 +332,28 @@ wfLoadExtension( 'CiteThisPage' );
 
 # EmbedVideoPlus extension (YouTube videos)
 #  upgraded to 1.0, RJackson 05/14/13
-require_once("$IP/extensions/EmbedVideo/EmbedVideo.php");
+wfLoadExtension('EmbedVideo');
 
 # ImageMap extension
 #  upgraded to 50d05ff, RJackson 05/15/13
-require_once("$IP/extensions/ImageMap/ImageMap.php");
+wfLoadExtension('ImageMap');
 
 # CategoryTree extension -- JeffLane 6/14/11
 #  upgraded to f5d36el, RJackson 05/15/13
 $wgUseAjax = true;
-require_once("{$IP}/extensions/CategoryTree/CategoryTree.php");
+wfLoadExtension('CategoryTree');
 
 # Special:Interwiki extension -- JeffLane 6/20/11
 #  upgraded to 2.2 20120425, RJackson 05/15/13
-require_once("$IP/extensions/Interwiki/Interwiki.php");
+wfLoadExtension('Interwiki');
 $wgGroupPermissions['*']['interwiki'] = false;
 $wgGroupPermissions['sysop']['interwiki'] = true;
 
 # Extension:TitleBlacklist extension -- Gvegnel 3/26/12
-require_once("{$IP}/extensions/TitleBlacklist/TitleBlacklist.php");
+wfLoadExtension('TitleBlacklist');
 $wgTitleBlacklistSources = array(
   array(
-    'type' => TBLSRC_LOCALPAGE,
+    'type' => 'localpage',
     'src'  => 'MediaWiki:Titleblacklist'
   )
 );
@@ -362,13 +362,13 @@ $wgTitleBlacklistSources = array(
 $wgJobRunRate = 0.01;
 
 # SpamBlacklist	d6fae90 -- RJackson 05/18/13
-require_once( "$IP/extensions/SpamBlacklist/SpamBlacklist.php" );
+wfLoadExtension( 'SpamBlacklist' );
 
 # Nuke ge01d28 -- RJackson 05/21/13
-require_once( "$IP/extensions/Nuke/Nuke.php" );
+wfLoadExtension( 'Nuke' );
 
 # WikiEditor 8383c9c -- RJackson 05/21/13
-require_once( "$IP/extensions/WikiEditor/WikiEditor.php" );
+wfLoadExtension( 'WikiEditor' );
     # Enables use of WikiEditor by default but still allow users to disable it in preferences
         $wgDefaultUserOptions['usebetatoolbar'] = 1;
         $wgDefaultUserOptions['usebetatoolbar-cgd'] = 1;
@@ -376,25 +376,25 @@ require_once( "$IP/extensions/WikiEditor/WikiEditor.php" );
         $wgDefaultUserOptions['wikieditor-preview'] = 1;
 
 # RenameUser 5faeac9 -- RJackson 05/21/13
-require_once("$IP/extensions/Renameuser/Renameuser.php");
+wfLoadExtension( 'Renameuser' );
 $wgGroupPermissions['sysop']['renameuser'] = true;
 
-require_once "$IP/extensions/MultimediaViewer/MultimediaViewer.php";
+wfLoadExtension( 'MultimediaViewer' );
 
 # Moussekateer's RedditThumbnail extension for setting thumbnail images for links on reddit
 require_once("$IP/extensions/RedditThumbnail/RedditThumbnail.php");
 $wgRedditThumbnailImage = 'http://wiki.teamfortress.com/w/images/3/3f/Reddit_thumbnail.png';
 
 # Scribunto extension for running lua code on wiki -- Moussekateer 16/11/13
-require_once "$IP/extensions/Scribunto/Scribunto.php";
+wfLoadExtension( 'Scribunto' );
 $wgScribuntoDefaultEngine = 'luastandalone';
 
 # CodeEditor extension for more featured editor for code pages -- Moussekateer 16/11/13
-require_once( "$IP/extensions/CodeEditor/CodeEditor.php" );
+wfLoadExtension( 'CodeEditor' );
 $wgScribuntoUseCodeEditor = true;
 
 # New MediaWiki notification system
-require_once "$IP/extensions/Echo/Echo.php";
+wfLoadExtension( 'Echo' );
 
 # NewUserMessage extension
 wfLoadExtension( 'NewUserMessage' );
@@ -449,7 +449,7 @@ if (array_key_exists('VARNISH_HOST', $_ENV)) {
 
     // Flatten 2d array
     if (!empty($varnishIps)) {
-        $wgSquidServers = call_user_func_array(array_merge, $varnishIps);
+        $wgSquidServers = call_user_func_array('array_merge', $varnishIps);
     }
 }
 
@@ -479,7 +479,7 @@ if (array_key_exists('TRUSTED_PROXIES', $_ENV)) {
 
     // Flatten 2d array
     if (!empty($trustedProxiesIps)) {
-        $wgSquidServersNoPurge = call_user_func_array(array_merge, $trustedProxiesIps);
+        $wgSquidServersNoPurge = call_user_func_array('array_merge', $trustedProxiesIps);
     }
 }
 
@@ -506,7 +506,7 @@ if (array_key_exists('MEMCACHED_HOST', $_ENV)) {
 
     // Flatten 2d array
     if (!empty($memcacheIps)) {
-        $wgMemCachedServers = call_user_func_array(array_merge, $memcacheIps);
+        $wgMemCachedServers = call_user_func_array('array_merge', $memcacheIps);
     }
 }
 
