@@ -484,31 +484,11 @@ if (array_key_exists('TRUSTED_PROXIES', $_ENV)) {
     }
 }
 
-// MEMCACHED_HOST can be a CSV of hostnames
-if (array_key_exists('MEMCACHED_HOST', $_ENV)) {
+if ($memcachedHost = getenv('MEMCACHED_HOST')) {
+    $wgMemCachedServers = [
+        $memcachedHost
+    ];
     $wgMainCacheType = CACHE_MEMCACHED;
-    
-    // Resolve to IPs, in case some/all of these hosts are round-robin DNS:
-    // We must be able to PURGE all memcache hosts
-    $memcacheHosts = explode(',', $_ENV['MEMCACHED_HOST']);
-    $memcacheIps = array_filter(array_map(function($host) {
-        if (strpos($host, ':') === false) {
-            $host .= ':11211';
-        }
-
-        // Preserve given port
-        list($host, $port) = explode(':', $host);
-        $ips = gethostbynamel($host) ?: [];
-
-        return array_map(function($ip) use ($port) {
-            return sprintf("%s:%s", $ip, $port);
-        }, $ips);
-    }, $memcacheHosts));
-
-    // Flatten 2d array
-    if (!empty($memcacheIps)) {
-        $wgMemCachedServers = call_user_func_array('array_merge', $memcacheIps);
-    }
 }
 
 // Configure SMTP if any SMTP env variables are set
