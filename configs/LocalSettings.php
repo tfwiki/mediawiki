@@ -407,6 +407,8 @@ $wgNewUserSuppressRC = true;
 
 # AbuseFilters extension
 wfLoadExtension( 'AbuseFilter' );
+$wgGroupPermissions['*']['abusefilter-view'] = false;
+$wgGroupPermissions['*']['abusefilter-log'] = false;
 $wgGroupPermissions['sysop']['abusefilter-modify'] = true;
 $wgGroupPermissions['sysop']['abusefilter-log-detail'] = true;
 $wgGroupPermissions['sysop']['abusefilter-view'] = true;
