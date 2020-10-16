@@ -491,6 +491,8 @@ if ($memcachedHost = getenv('MEMCACHED_HOST')) {
         $memcachedHost
     ];
     $wgMainCacheType = CACHE_MEMCACHED;
+    $wgParserCacheType = CACHE_MEMCACHED;
+    // $wgSessionCacheType = CACHE_MEMCACHED;
 }
 
 // Configure SMTP if any SMTP env variables are set
