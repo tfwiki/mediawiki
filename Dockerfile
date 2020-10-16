@@ -65,6 +65,18 @@ RUN composer install --no-dev --working-dir=/var/www/html/w/extensions/CheckUser
 RUN composer install --no-dev --working-dir=/var/www/html/w/extensions/Echo
 RUN composer install --no-dev --working-dir=/var/www/html/w/extensions/Flow
 
+# Better Scribunto (lua) performance, apparently
+COPY ext/luasandbox /opt/luasandbox
+RUN apt-get update && apt-get install -y liblua5.1-0-dev
+RUN ( \
+    cd /opt/luasandbox; \
+    phpize; \
+    ./configure; \
+    make; \
+    make install \
+)
+RUN docker-php-ext-enable luasandbox
+
 # Generate config at runtime
 COPY scripts/configure-mediawiki.sh /usr/local/bin/configure-mediawiki
 COPY scripts/configure-blackfire.sh /usr/local/bin/configure-blackfire

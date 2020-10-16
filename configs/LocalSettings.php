@@ -388,7 +388,7 @@ $wgRedditThumbnailImage = 'http://wiki.teamfortress.com/w/images/3/3f/Reddit_thu
 
 # Scribunto extension for running lua code on wiki -- Moussekateer 16/11/13
 wfLoadExtension( 'Scribunto' );
-$wgScribuntoDefaultEngine = 'luastandalone';
+$wgScribuntoDefaultEngine = 'luasandbox';
 
 # CodeEditor extension for more featured editor for code pages -- Moussekateer 16/11/13
 wfLoadExtension( 'CodeEditor' );
