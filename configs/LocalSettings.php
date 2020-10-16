@@ -92,9 +92,23 @@ $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 $wgDBmysql5 = true;
 
 # Profiling
-#$wgDebugLogFile = "$IP/cache/log.txt";
-#$wgProfileLimit = 1.0;
-#$wgProfiling = true;
+$wgProfiler['class'] = 'ProfilerXhprof';
+$wgProfiler['output'] = [ 'ProfilerOutputText' ];
+$wgProfiler['visible'] = true;
+$wgShowDebug = true;
+$wgDebugToolbar = true;
+
+// i dont know how to install older versions of php extensions sooo
+if (function_exists( 'tideways_xhprof_enable' ) && !function_exists( 'tideways_enable' )) {
+    function tideways_enable() {
+        return call_user_func_array('tideways_xhprof_enable', func_get_args());
+    }
+}
+if (function_exists( 'tideways_xhprof_disable' ) && !function_exists( 'tideways_disable' )) {
+    function tideways_disable() {
+        return call_user_func_array('tideways_xhprof_disable', func_get_args());
+    }
+}
 
 # Recommended at http://www.mediawiki.org/wiki/Memcached
 # Hoping this fixes session hijack false warning. - Bryn
@@ -429,7 +443,7 @@ wfLoadExtension( 'Thanks' );
 
 
 // VARNISH_HOST can be a CSV of hostnames
-if (array_key_exists('VARNISH_HOST', $_ENV)) {
+if (array_key_exists('VARNISH_HOST', $_ENV) && !empty($_ENV['VARNISH_HOST'])) {
     $wgUseSquid = true;
     $wgUsePrivateIPs = true;
     
