@@ -28,6 +28,11 @@ RUN mv /var/www/html /var/www/i-will-be-w && \
     mkdir -p /var/www/html && \
     mv /var/www/i-will-be-w /var/www/html/w
 
+# Install sentry extension
+# TODO: Just use the sentry extension
+RUN composer require sentry/sdk \
+    --working-dir=/var/www/html/w/ --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader
+
 # Assets
 COPY src/fonts /var/www/html/fonts
 COPY src/favicon.ico /var/www/html/
@@ -55,15 +60,6 @@ COPY src/extensions/Thanks /var/www/html/w/extensions/Thanks
 COPY src/extensions/UserMerge /var/www/html/w/extensions/UserMerge
 COPY src/extensions/Nuke /var/www/html/w/extensions/Nuke
 
-# Config templates
-COPY configs/php.ini /usr/local/etc/php/php.ini
-COPY configs/apache.conf /etc/apache2/sites-available/000-default.conf
-COPY configs/LocalSettings.php /var/www/html/w/LocalSettings.php
-
-# Install sentry extension, cos I cant think of a better way of doing this
-RUN composer require sentry/sdk \
-    --working-dir=/var/www/html/w/ --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader
-
 RUN composer install --no-dev --working-dir=/var/www/html/w/extensions/AbuseFilter
 RUN composer install --no-dev --working-dir=/var/www/html/w/extensions/CheckUser
 RUN composer install --no-dev --working-dir=/var/www/html/w/extensions/Echo
@@ -73,6 +69,11 @@ RUN composer install --no-dev --working-dir=/var/www/html/w/extensions/Flow
 COPY scripts/configure-mediawiki.sh /usr/local/bin/configure-mediawiki
 COPY scripts/configure-blackfire.sh /usr/local/bin/configure-blackfire
 RUN chmod +x /usr/local/bin/configure-*
+
+# Config templates
+COPY configs/php.ini /usr/local/etc/php/php.ini
+COPY configs/apache.conf /etc/apache2/sites-available/000-default.conf
+COPY configs/LocalSettings.php /var/www/html/w/LocalSettings.php
 
 VOLUME /var/www/html/w/images
 
