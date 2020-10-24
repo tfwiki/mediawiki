@@ -13,38 +13,29 @@
 
 # If you customize your file layout, set $IP to the directory that contains
 # the other MediaWiki files. It will be used as a base to locate files.
-if( defined( 'MW_INSTALL_PATH' ) ) {
-	$IP = MW_INSTALL_PATH;
+if (defined('MW_INSTALL_PATH')) {
+    $IP = MW_INSTALL_PATH;
 } else {
-	$IP = dirname( __FILE__ );
+    $IP = dirname(__FILE__);
 }
 
-// Setup Sentry error handling
-require_once $IP . "/vendor/autoload.php";
-if ($sentryUrl = getenv('SENTRY_DSN')) {
-    $client = new Raven_Client($sentryUrl, [
-        'name' => getenv('sitename')
-    ]);
-    $client->install();
-}
+$path = array($IP, "$IP/includes", "$IP/languages");
+set_include_path(implode(PATH_SEPARATOR, $path) . PATH_SEPARATOR . get_include_path());
 
-$path = array( $IP, "$IP/includes", "$IP/languages" );
-set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_include_path() );
-
-require_once( "$IP/includes/DefaultSettings.php" );
+require_once("$IP/includes/DefaultSettings.php");
 
 # If PHP's memory limit is very low, some operations may fail.
-ini_set( 'memory_limit', '1G' );
+ini_set('memory_limit', '1G');
 # If shell memory is too low, imagemagick will fail.
 $wgMaxShellMemory = 2097152;
 
 # Max page size limit (default: 2048)
 $wgMaxArticleSize = 4096;
 
-if ( $wgCommandLineMode ) {
-	if ( isset( $_SERVER ) && array_key_exists( 'REQUEST_METHOD', $_SERVER ) ) {
-		die( "This script must be run from the command line\n" );
-	}
+if ($wgCommandLineMode) {
+    if (isset($_SERVER) && array_key_exists('REQUEST_METHOD', $_SERVER)) {
+        die("This script must be run from the command line\n");
+    }
 }
 ## Uncomment this to disable output compression
 $wgDisableOutputCompression = true;
@@ -132,7 +123,7 @@ $wgShellLocale = "C.UTF-8";
 ## you can enable inline LaTeX equations:
 $wgUseTeX           = false;
 
-$wgLocalInterwiki   = strtolower( $wgSitename );
+$wgLocalInterwiki   = strtolower($wgSitename);
 
 $wgLanguageCode = "en";
 
@@ -180,7 +171,7 @@ $wgUsePathInfo = true;
 $wgNamespacesWithSubpages = array_fill(0, 200, true);
 
 # The DB is read-only and the message is displayed.
-$wgReadOnly = ( PHP_SAPI === 'cli' || empty(trim(getenv('READ_ONLY_MESSAGE'))) ) ? false : trim(getenv('READ_ONLY_MESSAGE'));
+$wgReadOnly = (PHP_SAPI === 'cli' || empty(trim(getenv('READ_ONLY_MESSAGE')))) ? false : trim(getenv('READ_ONLY_MESSAGE'));
 
 # User permissions -- don't allow anons to edit
 $wgGroupPermissions['*']['edit']            = false;
@@ -189,14 +180,14 @@ $wgGroupPermissions['*']['edit']            = false;
 $wgGroupPermissions['user']['move-rootuserpages'] = false; // cannot move root userpages
 
 # Users (autoconfirmed)
-$wgAutoConfirmAge = 5*86400; # 5 days (86,400 seconds in one day)
+$wgAutoConfirmAge = 5 * 86400; # 5 days (86,400 seconds in one day)
 $wgAutoConfirmCount = 10; # 10 edits
 $wgGroupPermissions['autoconfirmed']['writeapi'] = true;
 $wgGroupPermissions['autoconfirmed']['autoconfirmed'] = true; # Edit semi-protected pages.
 
 ## Permissions for "moderator" group
 #$wgGroupPermissions['moderator']					 = $wgGroupPermissions['user'];
-$wgGroupPermissions['moderator']['autopatrol'] 		 = true;
+$wgGroupPermissions['moderator']['autopatrol']          = true;
 $wgGroupPermissions['moderator']['browsearchive']    = true;
 $wgGroupPermissions['moderator']['block']            = true;
 $wgGroupPermissions['moderator']['delete']           = true;
@@ -209,7 +200,7 @@ $wgGroupPermissions['moderator']['movefile']         = true;
 $wgGroupPermissions['moderator']['patrol']           = true;
 $wgGroupPermissions['moderator']['protect']          = true;
 $wgGroupPermissions['moderator']['editprotected']    = true;
-$wgGroupPermissions['moderator']['editsemiprotected']= true;
+$wgGroupPermissions['moderator']['editsemiprotected'] = true;
 $wgGroupPermissions['moderator']['suppressredirect'] = true;
 $wgGroupPermissions['moderator']['undelete']         = true;
 
@@ -236,8 +227,8 @@ $wgGroupPermissions['suppress']['suppressrevision']  = false;
 
 # Restrict log (added for user creation)
 $wgLogRestrictions = array(
-        'suppress' => 'suppressionlog',
-        'newusers' => 'newusers',
+    'suppress' => 'suppressionlog',
+    'newusers' => 'newusers',
 );
 
 ## Allow user CSS/styles
@@ -245,9 +236,9 @@ $wgAllowUserJs  = true;
 $wgAllowUserCss = true;
 
 $wgNamespaceAliases = array(
-'TF' => NS_PROJECT,
-'TFW' => NS_PROJECT,
-'Wiki' => NS_PROJECT
+    'TF' => NS_PROJECT,
+    'TFW' => NS_PROJECT,
+    'Wiki' => NS_PROJECT
 );
 
 # Inline Diff
@@ -261,13 +252,13 @@ $wgEnableUploads                = true;
 $wgUseImageResize               = true;
 $wgAllowExternalImages          = true;
 $wgFileExtensions               = array(
-                                      'png', 'gif', 'jpg', 'jpeg', 'webp', 'apng', 'psd', # Image files
-                                      'wav', 'flac', 'mp3', 'ogg',                        # Sound files
-                                      'webm',                                             # Video files
-                                      'ttf', 'otf',                                       # Font files
-                                      'txt', 'cfg', 'diff', 'patch',                      # Text files
-                                      'dem'                                               # Demo files
-                                  );
+    'png', 'gif', 'jpg', 'jpeg', 'webp', 'apng', 'psd', # Image files
+    'wav', 'flac', 'mp3', 'ogg',                        # Sound files
+    'webm',                                             # Video files
+    'ttf', 'otf',                                       # Font files
+    'txt', 'cfg', 'diff', 'patch',                      # Text files
+    'dem'                                               # Demo files
+);
 $wgVerifyMimeType               = false; # Always buggy, never helpful.
 $wgUseImageMagick               = true;
 $wgImageMagickConvertCommand    = "/usr/bin/convert";
@@ -285,7 +276,7 @@ $wgShowIPinHeader = false;
 $wgRestrictDisplayTitle = false;
 
 # Add steam links to allowed URL protocols
-array_push( $wgUrlProtocols, "steam://" );
+array_push($wgUrlProtocols, "steam://");
 
 # iOS bookmark logo
 # TODO: replace hardcoded URL
@@ -300,22 +291,28 @@ $wgDefaultUserOptions["watchdefault"] = false;
 ## Third Party Extensions
 #
 
+// Setup Sentry error handling
+if ($sentryUrl = getenv('SENTRY_DSN')) {
+    wfLoadExtension('Sentry');
+    $wgSentryDsn = $sentryUrl;
+}
+
 # Wikipedia parser extended functions
 #  upgraded to 1.5.1, RJackson 05/15/13
 require_once("$IP/extensions/ParserFunctions/ParserFunctions.php");
 
 # Hopefully NoCaptcha will squash dem bots
-wfLoadExtensions([ 'ConfirmEdit', 'ConfirmEdit/ReCaptchaNoCaptcha' ]);
+wfLoadExtensions(['ConfirmEdit', 'ConfirmEdit/ReCaptchaNoCaptcha']);
 $wgCaptchaClass = 'ReCaptchaNoCaptcha';
 $wgReCaptchaSiteKey = getenv('RECAPTCHA_KEY');
 $wgReCaptchaSecretKey = getenv('RECAPTCHA_SECRET');
 
-$wgGroupPermissions['*'            ]['skipcaptcha'] = false;
-$wgGroupPermissions['user'         ]['skipcaptcha'] = false;
+$wgGroupPermissions['*']['skipcaptcha'] = false;
+$wgGroupPermissions['user']['skipcaptcha'] = false;
 $wgGroupPermissions['autoconfirmed']['skipcaptcha'] = false;
-$wgGroupPermissions['bot'          ]['skipcaptcha'] = true; // registered bots
-$wgGroupPermissions['sysop'        ]['skipcaptcha'] = true;
-$wgGroupPermissions['moderator'    ]['skipcaptcha'] = true;
+$wgGroupPermissions['bot']['skipcaptcha'] = true; // registered bots
+$wgGroupPermissions['sysop']['skipcaptcha'] = true;
+$wgGroupPermissions['moderator']['skipcaptcha'] = true;
 
 # Uploading local data
 #require_once 'extensions/SpecialUploadLocal/SpecialUploadLocal.php';
@@ -323,13 +320,13 @@ $wgGroupPermissions['moderator'    ]['skipcaptcha'] = true;
 ### Causing errors with 1.20.5 upgrade; removing for now. - RJ
 
 # UserMerge extension
-wfLoadExtension( 'UserMerge' );
+wfLoadExtension('UserMerge');
 $wgGroupPermissions['bureaucrat']['usermerge'] = true;
 
 # Cite extension
 #  upgraded to aa635f0, RJackson 05/15/13
 require_once("$IP/extensions/Cite/Cite.php");
-wfLoadExtension( 'CiteThisPage' );
+wfLoadExtension('CiteThisPage');
 
 # EmbedVideoPlus extension (YouTube videos)
 #  upgraded to 1.0, RJackson 05/14/13
@@ -353,52 +350,52 @@ $wgGroupPermissions['sysop']['interwiki'] = true;
 # Extension:TitleBlacklist extension -- Gvegnel 3/26/12
 wfLoadExtension('TitleBlacklist');
 $wgTitleBlacklistSources = array(
-  array(
-    'type' => 'localpage',
-    'src'  => 'MediaWiki:Titleblacklist'
-  )
+    array(
+        'type' => 'localpage',
+        'src'  => 'MediaWiki:Titleblacklist'
+    )
 );
 
 # Set to 0 and use cron job instead if performance issues arise
 $wgJobRunRate = 0.01;
 
 # SpamBlacklist	d6fae90 -- RJackson 05/18/13
-wfLoadExtension( 'SpamBlacklist' );
+wfLoadExtension('SpamBlacklist');
 
 # Nuke ge01d28 -- RJackson 05/21/13
-wfLoadExtension( 'Nuke' );
+wfLoadExtension('Nuke');
 
 # WikiEditor 8383c9c -- RJackson 05/21/13
-wfLoadExtension( 'WikiEditor' );
-    # Enables use of WikiEditor by default but still allow users to disable it in preferences
-        $wgDefaultUserOptions['usebetatoolbar'] = 1;
-        $wgDefaultUserOptions['usebetatoolbar-cgd'] = 1;
-    # Displays the Preview and Changes tabs
-        $wgDefaultUserOptions['wikieditor-preview'] = 1;
+wfLoadExtension('WikiEditor');
+# Enables use of WikiEditor by default but still allow users to disable it in preferences
+$wgDefaultUserOptions['usebetatoolbar'] = 1;
+$wgDefaultUserOptions['usebetatoolbar-cgd'] = 1;
+# Displays the Preview and Changes tabs
+$wgDefaultUserOptions['wikieditor-preview'] = 1;
 
 # RenameUser 5faeac9 -- RJackson 05/21/13
-wfLoadExtension( 'Renameuser' );
+wfLoadExtension('Renameuser');
 $wgGroupPermissions['sysop']['renameuser'] = true;
 
-wfLoadExtension( 'MultimediaViewer' );
+wfLoadExtension('MultimediaViewer');
 
 # Moussekateer's RedditThumbnail extension for setting thumbnail images for links on reddit
 require_once("$IP/extensions/RedditThumbnail/RedditThumbnail.php");
 $wgRedditThumbnailImage = 'http://wiki.teamfortress.com/w/images/3/3f/Reddit_thumbnail.png';
 
 # Scribunto extension for running lua code on wiki -- Moussekateer 16/11/13
-wfLoadExtension( 'Scribunto' );
+wfLoadExtension('Scribunto');
 $wgScribuntoDefaultEngine = 'luasandbox';
 
 # CodeEditor extension for more featured editor for code pages -- Moussekateer 16/11/13
-wfLoadExtension( 'CodeEditor' );
+wfLoadExtension('CodeEditor');
 $wgScribuntoUseCodeEditor = true;
 
 # New MediaWiki notification system
-wfLoadExtension( 'Echo' );
+wfLoadExtension('Echo');
 
 # NewUserMessage extension
-wfLoadExtension( 'NewUserMessage' );
+wfLoadExtension('NewUserMessage');
 $wgNewUserSuppressRC = true;
 
 # DISABLE REGISTRATION -- RJackson 14/Dec/2015
@@ -406,7 +403,7 @@ $wgNewUserSuppressRC = true;
 #$wgGroupPermissions['*']['createaccount'] = false;
 
 # AbuseFilters extension
-wfLoadExtension( 'AbuseFilter' );
+wfLoadExtension('AbuseFilter');
 $wgGroupPermissions['*']['abusefilter-view'] = false;
 $wgGroupPermissions['*']['abusefilter-log'] = false;
 $wgGroupPermissions['sysop']['abusefilter-modify'] = true;
@@ -418,25 +415,25 @@ $wgGroupPermissions['sysop']['abusefilter-modify-restricted'] = true;
 $wgGroupPermissions['sysop']['abusefilter-revert'] = true;
 
 
-wfLoadExtension( 'CheckUser' );
+wfLoadExtension('CheckUser');
 $wgGroupPermissions['sysop']['checkuser'] = true;
 $wgGroupPermissions['sysop']['checkuser-log'] = true;
 
 // wfLoadExtension( 'Flow' ); // Uncomment this for MW 1.28
 require_once "$IP/extensions/Flow/Flow.php";
 
-wfLoadExtension( 'Thanks' );
+wfLoadExtension('Thanks');
 
 
 // VARNISH_HOST can be a CSV of hostnames
 if (array_key_exists('VARNISH_HOST', $_ENV)) {
     $wgUseSquid = true;
     $wgUsePrivateIPs = true;
-    
+
     // Resolve to IPs, in case some/all of these hosts are round-robin DNS:
     // We must be able to PURGE all varnish hosts
     $varnishHosts = explode(',', $_ENV['VARNISH_HOST']);
-    $varnishIps = array_filter(array_map(function($host) {
+    $varnishIps = array_filter(array_map(function ($host) {
         if (strpos($host, ':') === false) {
             return gethostbynamel($host);
         }
@@ -445,7 +442,7 @@ if (array_key_exists('VARNISH_HOST', $_ENV)) {
         list($host, $port) = explode(':', $host);
         $ips = gethostbynamel($host) ?: [];
 
-        return array_map(function($ip) use ($port) {
+        return array_map(function ($ip) use ($port) {
             return sprintf("%s:%s", $ip, $port);
         }, $ips);
     }, $varnishHosts));
@@ -458,10 +455,10 @@ if (array_key_exists('VARNISH_HOST', $_ENV)) {
 
 // TRUSTED_PROXIES can be a CSV of hostnames
 if (array_key_exists('TRUSTED_PROXIES', $_ENV)) {
-   
+
     // Resolve to IPs, in case some/all of these hosts are round-robin DNS:
     $trustedProxiesHosts = explode(',', $_ENV['TRUSTED_PROXIES']);
-    $trustedProxiesIps = array_filter(array_map(function($host) {
+    $trustedProxiesIps = array_filter(array_map(function ($host) {
         if (strpos($host, '/') !== false) {
             // CIDR notation, keep as is
             return [$host];
@@ -475,7 +472,7 @@ if (array_key_exists('TRUSTED_PROXIES', $_ENV)) {
         list($host, $port) = explode(':', $host);
         $ips = gethostbynamel($host) ?: [];
 
-        return array_map(function($ip) use ($port) {
+        return array_map(function ($ip) use ($port) {
             return sprintf("%s:%s", $ip, $port);
         }, $ips);
     }, $trustedProxiesHosts));
@@ -505,7 +502,7 @@ $smtpEnvVarMap = array(
 $smtpEnvVars = array_filter(array_intersect_key($_ENV, $smtpEnvVarMap));
 if (!empty($smtpEnvVars)) {
     $wgSMTP = array();
-    foreach($smtpEnvVars as $key => $val) {
+    foreach ($smtpEnvVars as $key => $val) {
         $properKey = $smtpEnvVarMap[$key];
 
         // Cast certain values to expected types

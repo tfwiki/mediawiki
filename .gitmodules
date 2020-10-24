@@ -34,3 +34,6 @@
 [submodule "ext/luasandbox"]
 	path = ext/luasandbox
 	url = https://gerrit.wikimedia.org/r/mediawiki/php/luasandbox.git
+[submodule "src/extensions/Sentry"]
+	path = src/extensions/Sentry
+	url = https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Sentry.git
