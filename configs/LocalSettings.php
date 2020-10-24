@@ -258,6 +258,8 @@ $wgQueryCacheLimit = 10000;
 if ($sentryUrl = getenv('SENTRY_DSN')) {
     wfLoadExtension('Sentry');
     $wgSentryDsn = $sentryUrl;
+
+    // wfLoadExtension('Buggy');
 }
 
 # Wikipedia parser extended functions
@@ -342,7 +344,7 @@ wfLoadExtension('CheckUser');
 $wgGroupPermissions['sysop']['checkuser'] = true;
 $wgGroupPermissions['sysop']['checkuser-log'] = true;
 
-wfLoadExtension( 'Flow' );
+wfLoadExtension('Flow');
 
 wfLoadExtension('Thanks');
 

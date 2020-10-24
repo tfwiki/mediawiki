@@ -37,3 +37,6 @@
 [submodule "src/extensions/Sentry"]
 	path = src/extensions/Sentry
 	url = https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Sentry.git
+[submodule "src/extensions/Buggy"]
+	path = src/extensions/Buggy
+	url = https://gerrit.wikimedia.org/r/mediawiki/extensions/Buggy.git

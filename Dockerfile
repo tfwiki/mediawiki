@@ -44,6 +44,7 @@ COPY src/skins/valve /var/www/html/w/skins/valve
 
 # MediaWiki extensions
 COPY src/extensions/AbuseFilter /var/www/html/w/extensions/AbuseFilter
+COPY src/extensions/Buggy /var/www/html/w/extensions/Buggy
 COPY src/extensions/CheckUser /var/www/html/w/extensions/CheckUser
 COPY src/extensions/Echo /var/www/html/w/extensions/Echo
 COPY src/extensions/EmbedVideo /var/www/html/w/extensions/EmbedVideo
