@@ -28,9 +28,6 @@
 [submodule "src/extensions/Thanks"]
 	path = src/extensions/Thanks
 	url = git@github.com:wikimedia/mediawiki-extensions-Thanks.git
-[submodule "src/extensions/Nuke"]
-	path = src/extensions/Nuke
-	url = git@github.com:wikimedia/mediawiki-extensions-Nuke.git
 [submodule "ext/luasandbox"]
 	path = ext/luasandbox
 	url = https://gerrit.wikimedia.org/r/mediawiki/php/luasandbox.git

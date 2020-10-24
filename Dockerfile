@@ -1,4 +1,4 @@
-FROM mediawiki:1.31
+FROM mediawiki:1.32
 
 # Luxuries
 RUN apt-get update && apt-get install -y \
@@ -55,7 +55,6 @@ COPY src/extensions/Scribunto /var/www/html/w/extensions/Scribunto
 COPY src/extensions/Sentry /var/www/html/w/extensions/Sentry
 COPY src/extensions/Thanks /var/www/html/w/extensions/Thanks
 COPY src/extensions/UserMerge /var/www/html/w/extensions/UserMerge
-COPY src/extensions/Nuke /var/www/html/w/extensions/Nuke
 
 RUN composer install --no-dev --working-dir=/var/www/html/w/extensions/AbuseFilter
 RUN composer install --no-dev --working-dir=/var/www/html/w/extensions/CheckUser

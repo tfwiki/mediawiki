@@ -264,7 +264,7 @@ if ($sentryUrl = getenv('SENTRY_DSN')) {
 
 # Wikipedia parser extended functions
 #  upgraded to 1.5.1, RJackson 05/15/13
-require_once("$IP/extensions/ParserFunctions/ParserFunctions.php");
+wfLoadExtension('ParserFunctions');
 
 # Hopefully NoCaptcha will squash dem bots
 wfLoadExtensions(['ConfirmEdit', 'ConfirmEdit/ReCaptchaNoCaptcha']);
@@ -282,7 +282,7 @@ $wgGroupPermissions['moderator']['skipcaptcha'] = true;
 wfLoadExtension('UserMerge');
 $wgGroupPermissions['bureaucrat']['usermerge'] = true;
 
-require_once("$IP/extensions/Cite/Cite.php");
+wfLoadExtension('Cite');
 wfLoadExtension('CiteThisPage');
 
 wfLoadExtension('EmbedVideo');
@@ -314,7 +314,6 @@ $wgGroupPermissions['sysop']['renameuser'] = true;
 
 wfLoadExtension('MultimediaViewer');
 
-require_once("$IP/extensions/RedditThumbnail/RedditThumbnail.php");
 $wgRedditThumbnailImage = 'http://wiki.teamfortress.com/w/images/3/3f/Reddit_thumbnail.png';
 
 wfLoadExtension('Scribunto');

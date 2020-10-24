@@ -1,6 +1,12 @@
 mediawiki: checkout-submodules
 	docker build -t tfwiki/mediawiki:local .
 
+tag:
+	docker build -t tfwiki/mediawiki:${v} .
+
+push: tag
+	docker push tfwiki/mediawiki:${v}
+
 run: mediawiki certs
 	docker-compose up -d
 
