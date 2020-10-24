@@ -37,7 +37,7 @@ if ($wgCommandLineMode) {
         die("This script must be run from the command line\n");
     }
 }
-## Uncomment this to disable output compression
+// TODO: Performance comparison. Sounds harmless to leave enabled.
 $wgDisableOutputCompression = true;
 
 ## Disable hit counters, costs a db update per page hit, and doesn't play well with cache
@@ -56,6 +56,7 @@ $wgScriptPath       = "/w";
 
 ## UPO means: this is also a user preference option
 
+# Will be enabled later if SMTP is configured
 $wgEnableEmail      = false;
 $wgEnableUserEmail  = false; # UPO
 
@@ -79,51 +80,19 @@ $wgDBprefix         = "";
 # MySQL table options to use during installation or update
 $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 
-# Experimental charset support for MySQL 4.1/5.0.
-$wgDBmysql5 = true;
-
-# Profiling
-#$wgDebugLogFile = "$IP/cache/log.txt";
-#$wgProfileLimit = 1.0;
-#$wgProfiling = true;
-
-# Recommended at http://www.mediawiki.org/wiki/Memcached
-# Hoping this fixes session hijack false warning. - Bryn
-# Don't need to explicitly set these, they'll be inherited from $wgMainCacheType - rjackson 2017-09-28
-#$wgMessageCacheType = CACHE_MEMCACHED; # optional
-
 # Its recommended we keep this in DB on a large wiki (tens of thousands of pages; we have hundreds of thousands!)
 $wgParserCacheType = CACHE_DB; # optional
 
 # Memcache isn't reliable with multiple memcache servers
+# We fixed with mcrouter in 1e861cc and tfwiki/deployment@4383723, but dont see
+# a need to change session provider. DB cons don't seem expensive.
+# TODO: Continually re-evaluate above claim.
 $wgSessionCacheType = CACHE_DB;
 
-# Use local file cache of page output, this may not be 100% correct for some pages with variables
-# See: http://www.mediawiki.org/wiki/Manual:File_cache, this is a stop gap to stop it kiling the forums
-# during the holiday sale until we can implement a good reverse proxy setup.
-$wgUseFileCache = false; /* default: false */
+# We have Varnish in front of the servers, so we don't need serverside caching.
+$wgUseFileCache = false;
 $wgFileCacheDirectory = "$IP/cache";
-$wgShowIPinHeader = false;
-
-#Flags to decrease database locking
-$wgAntiLockFlags = ALF_NO_LINK_LOCK | ALF_NO_BLOCK_LOCK;
-
-## If you use ImageMagick (or any other shell command) on a
-## Linux server, this will need to be set to the name of an
-## available UTF-8 locale
-$wgShellLocale = "C.UTF-8";
-
-## If you want to use image uploads under safe mode,
-## create the directories images/archive, images/thumb and
-## images/temp, and make them all writable. Then uncomment
-## this, if it's not already uncommented:
-# $wgHashedUploadDirectory = false;
-
-## If you have the appropriate support software installed
-## you can enable inline LaTeX equations:
-$wgUseTeX           = false;
-
-$wgLocalInterwiki   = strtolower($wgSitename);
+$wgShowIPinHeader = false; # Def dont want to cache this
 
 $wgLanguageCode = "en";
 
@@ -155,12 +124,6 @@ $wgRightsUrl = "";
 $wgRightsText = "";
 $wgRightsIcon = "";
 # $wgRightsCode = ""; # Not yet used
-
-$wgDiff3 = "/usr/bin/diff3";
-
-# When you make changes to this configuration file, this will make
-# sure that cached pages are cleared.
-#$wgCacheEpoch = max( $wgCacheEpoch, gmdate( 'YmdHis', @filemtime( __FILE__ ) ) );
 
 # LOCAL ADDITIONS
 # For short/pretty URLs
@@ -241,9 +204,6 @@ $wgNamespaceAliases = array(
     'Wiki' => NS_PROJECT
 );
 
-# Inline Diff
-$wgEnableHtmlDiff = true;
-
 ## To enable image uploads, make sure the 'images' directory
 ## is writable, then uncomment this:
 $wgUploadPath                   = "$wgScriptPath/images";
@@ -262,14 +222,9 @@ $wgFileExtensions               = array(
 $wgVerifyMimeType               = false; # Always buggy, never helpful.
 $wgUseImageMagick               = true;
 $wgImageMagickConvertCommand    = "/usr/bin/convert";
-# Allow direct http uploads
-$wgAllowCopyUploads = false;
 
 # Require a confirmed email address to edit
 $wgEmailConfirmToEdit = false;
-
-# Hide IP for anons
-$wgShowIPinHeader = false;
 
 # Disable restriction to allow users to change the display page title with {{DISPLAYTITLE}}
 # Default is to only allow a normalized version of the actual page name. -- added JeffL 7/21/09
@@ -286,6 +241,14 @@ $wgAppleTouchIcon = "http://wiki.teamfortress.com/w/images/2/21/IOS_Bookmark_Wik
 $wgDefaultUserOptions["enotifusertalkpages"] = false;
 $wgDefaultUserOptions["enotifwatchlistpages"] = false;
 $wgDefaultUserOptions["watchdefault"] = false;
+
+# We're running dedicated job workers, no need to do this in any HTTP requests
+$wgJobRunRate = 0;
+
+// Disable database-intensive features (certain special pages); we'll render those via cronjobbed maintenance scripts
+$wgMiserMode = true;
+$wgQueryCacheLimit = 10000;
+
 
 #
 ## Third Party Extensions
@@ -314,40 +277,22 @@ $wgGroupPermissions['bot']['skipcaptcha'] = true; // registered bots
 $wgGroupPermissions['sysop']['skipcaptcha'] = true;
 $wgGroupPermissions['moderator']['skipcaptcha'] = true;
 
-# Uploading local data
-#require_once 'extensions/SpecialUploadLocal/SpecialUploadLocal.php';
-#$wgUploadLocalDirectory = $IP . '/images/import/';
-### Causing errors with 1.20.5 upgrade; removing for now. - RJ
-
-# UserMerge extension
 wfLoadExtension('UserMerge');
 $wgGroupPermissions['bureaucrat']['usermerge'] = true;
 
-# Cite extension
-#  upgraded to aa635f0, RJackson 05/15/13
 require_once("$IP/extensions/Cite/Cite.php");
 wfLoadExtension('CiteThisPage');
 
-# EmbedVideoPlus extension (YouTube videos)
-#  upgraded to 1.0, RJackson 05/14/13
 wfLoadExtension('EmbedVideo');
 
-# ImageMap extension
-#  upgraded to 50d05ff, RJackson 05/15/13
 wfLoadExtension('ImageMap');
 
-# CategoryTree extension -- JeffLane 6/14/11
-#  upgraded to f5d36el, RJackson 05/15/13
-$wgUseAjax = true;
 wfLoadExtension('CategoryTree');
 
-# Special:Interwiki extension -- JeffLane 6/20/11
-#  upgraded to 2.2 20120425, RJackson 05/15/13
 wfLoadExtension('Interwiki');
 $wgGroupPermissions['*']['interwiki'] = false;
 $wgGroupPermissions['sysop']['interwiki'] = true;
 
-# Extension:TitleBlacklist extension -- Gvegnel 3/26/12
 wfLoadExtension('TitleBlacklist');
 $wgTitleBlacklistSources = array(
     array(
@@ -356,53 +301,31 @@ $wgTitleBlacklistSources = array(
     )
 );
 
-# Set to 0 and use cron job instead if performance issues arise
-$wgJobRunRate = 0.01;
-
-# SpamBlacklist	d6fae90 -- RJackson 05/18/13
 wfLoadExtension('SpamBlacklist');
 
-# Nuke ge01d28 -- RJackson 05/21/13
 wfLoadExtension('Nuke');
 
-# WikiEditor 8383c9c -- RJackson 05/21/13
 wfLoadExtension('WikiEditor');
-# Enables use of WikiEditor by default but still allow users to disable it in preferences
-$wgDefaultUserOptions['usebetatoolbar'] = 1;
-$wgDefaultUserOptions['usebetatoolbar-cgd'] = 1;
-# Displays the Preview and Changes tabs
-$wgDefaultUserOptions['wikieditor-preview'] = 1;
 
-# RenameUser 5faeac9 -- RJackson 05/21/13
 wfLoadExtension('Renameuser');
 $wgGroupPermissions['sysop']['renameuser'] = true;
 
 wfLoadExtension('MultimediaViewer');
 
-# Moussekateer's RedditThumbnail extension for setting thumbnail images for links on reddit
 require_once("$IP/extensions/RedditThumbnail/RedditThumbnail.php");
 $wgRedditThumbnailImage = 'http://wiki.teamfortress.com/w/images/3/3f/Reddit_thumbnail.png';
 
-# Scribunto extension for running lua code on wiki -- Moussekateer 16/11/13
 wfLoadExtension('Scribunto');
 $wgScribuntoDefaultEngine = 'luasandbox';
 
-# CodeEditor extension for more featured editor for code pages -- Moussekateer 16/11/13
 wfLoadExtension('CodeEditor');
 $wgScribuntoUseCodeEditor = true;
 
-# New MediaWiki notification system
 wfLoadExtension('Echo');
 
-# NewUserMessage extension
 wfLoadExtension('NewUserMessage');
 $wgNewUserSuppressRC = true;
 
-# DISABLE REGISTRATION -- RJackson 14/Dec/2015
-# Intended to be temporary, beacuse there are a billion spambots signing up and spamming.
-#$wgGroupPermissions['*']['createaccount'] = false;
-
-# AbuseFilters extension
 wfLoadExtension('AbuseFilter');
 $wgGroupPermissions['*']['abusefilter-view'] = false;
 $wgGroupPermissions['*']['abusefilter-log'] = false;
@@ -419,8 +342,7 @@ wfLoadExtension('CheckUser');
 $wgGroupPermissions['sysop']['checkuser'] = true;
 $wgGroupPermissions['sysop']['checkuser-log'] = true;
 
-// wfLoadExtension( 'Flow' ); // Uncomment this for MW 1.28
-require_once "$IP/extensions/Flow/Flow.php";
+wfLoadExtension( 'Flow' );
 
 wfLoadExtension('Thanks');
 
@@ -532,7 +454,3 @@ if (array_key_exists('EMAIL_EMERGENCY_CONTACT', $_ENV)) {
 if (array_key_exists('EMAIL_PASSWORD_SENDER', $_ENV)) {
     $wgPasswordSender = $_ENV['EMAIL_PASSWORD_SENDER'];
 }
-
-// Disable database-intensive features (certain special pages); we'll render those via cronjobbed maintenance scripts
-$wgMiserMode = true;
-$wgQueryCacheLimit = 10000;
