@@ -170,7 +170,7 @@ $wgGroupPermissions['moderator']['undelete']         = true;
 ## Permissions for Bot
 $wgGroupPermissions['bot']['bot']               = true;
 $wgGroupPermissions['bot']['autoconfirmed']     = true;
-$wgGroupPermissions['bot']['noratelimits']      = true;
+$wgGroupPermissions['bot']['noratelimit']       = true;
 
 ## Permissions for Sysops
 #$wgGroupPermissions['sysop'] = $wgGroupPermissions['moderator'];
